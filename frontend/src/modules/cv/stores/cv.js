@@ -34,6 +34,13 @@ export const useCVStore = defineStore('cv', () => {
   const lastFetchedAt = ref(null)
   const STALE_AFTER_MS = 30_000 // 30 seconds
 
+  /**
+   * hasFetched — true after the very first API call resolves.
+   * Before the first fetch, we don't know if the user has a profile or not,
+   * so the template should show a skeleton rather than "No Profile" banner.
+   */
+  const hasFetched = ref(false)
+
   // ── Computed helpers for each CV section ───────────────────
   const profilePhoto = computed(() => profile.value?.photo ?? null)
   const headline = computed(() => profile.value?.headline ?? '')
@@ -79,6 +86,7 @@ export const useCVStore = defineStore('cv', () => {
       }
     } finally {
       loading.value = false
+      hasFetched.value = true
     }
   }
 
@@ -164,6 +172,7 @@ export const useCVStore = defineStore('cv', () => {
     loading.value = false
     error.value = null
     lastFetchedAt.value = null
+    hasFetched.value = false
   }
 
   return {
@@ -176,6 +185,7 @@ export const useCVStore = defineStore('cv', () => {
     loading,
     error,
     hasProfile,
+    hasFetched,
 
     // cv sections
     profilePhoto,

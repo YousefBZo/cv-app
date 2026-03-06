@@ -16,6 +16,7 @@ import {
 } from '@/modules/cv/composables/useValidation'
 import EditModal from '@/shared/components/EditModal.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
+import CVSkeleton from '@/modules/cv/components/CVSkeleton.vue'
 
 const cvStore = useCVStore()
 const authStore = useAuthStore()
@@ -27,8 +28,12 @@ onMounted(() => {
   cvStore.fetchCV()
 })
 
+/**
+ * Progressive reveal: sections animate in once data arrives.
+ * The watch triggers isVisible=true as soon as the profile loads.
+ * No setTimeout fallback needed — the skeleton handles the loading state.
+ */
 watch(() => cvStore.profile, (p) => { if (p) isVisible.value = true })
-setTimeout(() => { if (!isVisible.value) isVisible.value = true }, 10000)
 
 // --- PAGINATION ---
 const { displayed: displayedExperiences, hasMore: hasMoreExp, isExpanded: isExpandedExp, showAll: showAllExp, showLess: showLessExp } = usePagination(() => cvStore.experiences, 5)
@@ -296,13 +301,8 @@ const getSkillLevel = (level) => {
   <div class="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30 overflow-x-hidden pb-20"
     style="background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);">
 
-    <!-- Loading State -->
-    <div v-if="cvStore.loading" class="flex items-center justify-center min-h-[60vh]">
-      <div class="text-center space-y-4">
-        <LoadingSpinner class="w-8 h-8 mx-auto text-blue-400" />
-        <p class="text-slate-500 text-sm">Loading your CV...</p>
-      </div>
-    </div>
+    <!-- Loading State — skeleton screen instead of spinner -->
+    <CVSkeleton v-if="cvStore.loading" />
 
     <!-- No Profile Banner -->
     <div v-else-if="!cvStore.hasProfile && !cvStore.loading" class="flex items-center justify-center min-h-[60vh]">
