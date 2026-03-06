@@ -1,0 +1,117 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+    container_name: "${APP_NAME}_php"
+    restart: unless-stopped
+    volumes:
+      - ./:/${APP_NAME}:cached
+      - vendor:/${APP_NAME}/vendor
+    networks:
+      - cv_core_network
+    depends_on:
+      pgsql:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || kill -0 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:alpine
+    container_name: "${APP_NAME}_nginx"
+    restart: unless-stopped
+    depends_on:
+      - php
+    ports:
+      - "${APP_PORT:-8082}:80"
+    volumes:
+      - ./:/${APP_NAME}:ro
+      - ./docker/nginx:/etc/nginx/conf.d:ro
+    working_dir: /${APP_NAME}
+    networks:
+      - cv_core_network
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  pgsql:
+    image: postgres:16-alpine
+    container_name: "${APP_NAME}_pgsql"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_DATABASE}"
+    ports:
+      - "${PGSQL_PORT:-5432}:5432"
+    volumes:
+      - pgdata-cv-core:/var/lib/postgresql/data
+    networks:
+      - cv_core_network
+    ##
+    # OPTIMIZATION #4 — PostgreSQL Connection Pooling & Tuning
+    #
+    # WHY each parameter matters:
+    #   shared_buffers=256MB     → PG's main in-memory cache (25% of container RAM).
+    #                              Without this, PG only uses 128 KB by default and
+    #                              reads from disk constantly.
+    #   effective_cache_size=768MB → Tells the query planner how much total cache
+    #                              (PG + OS) is available. Helps it choose index scans
+    #                              over sequential scans when data fits in cache.
+    #   work_mem=4MB             → Memory per sort/hash operation. Default is 4MB but
+    #                              we're explicit. Prevents disk-spill for JOINs.
+    #   maintenance_work_mem=64MB → Memory for VACUUM, CREATE INDEX. Speeds up
+    #                              index creation and autovacuum.
+    #   max_connections=50       → Matches PHP-FPM max_children (20) plus buffer.
+    #                              Too many connections wastes memory (~5MB each).
+    #   random_page_cost=1.1     → Tells planner we're on SSD. Default is 4.0 (HDD).
+    #                              Makes planner prefer fast index scans.
+    #   checkpoint_completion_target=0.9 → Spread WAL writes over 90% of checkpoint
+    #                              interval. Reduces I/O spikes.
+    #   wal_buffers=16MB         → Buffer for Write-Ahead Log. Reduces disk writes
+    #                              during transactions.
+    #   default_statistics_target=100 → Better query plans via more detailed column
+    #                              statistics during ANALYZE.
+    ##
+    command: >
+      postgres
+        -c shared_buffers=256MB
+        -c effective_cache_size=768MB
+        -c work_mem=4MB
+        -c maintenance_work_mem=64MB
+        -c max_connections=50
+        -c random_page_cost=1.1
+        -c checkpoint_completion_target=0.9
+        -c wal_buffers=16MB
+        -c default_statistics_target=100
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+volumes:
+  pgdata-cv-core:
+  vendor:
+
+networks:
+  cv_core_network:
+    name: "cv_core_net"
+    driver: bridge
+

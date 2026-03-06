@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker (don't send Docker configs into the build context)
+docker-compose.yaml
+docker-compose.override.yaml
+Dockerfile
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+*.md
+LICENSE
+
+# Logs
+storage/logs/*.log
+
+# Tests (not needed in image)
+tests/
+
+# Node (frontend handled separately)
+node_modules/
