@@ -34,7 +34,7 @@ const isAuthPage = computed(() => ['Login', 'Register'].includes(route.name));
           <!-- Brand -->
           <div>
             <div class="flex items-center gap-2 mb-3">
-              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black text-xs">
+              <div class="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black text-xs">
                 {{ cvStore.userName?.charAt(0) || 'C' }}
               </div>
               <span class="text-white font-bold">{{ cvStore.userName || 'CV Builder' }}</span>
