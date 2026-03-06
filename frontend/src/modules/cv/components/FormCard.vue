@@ -7,7 +7,7 @@ defineProps({
 <template>
   <div class="min-h-[85vh] flex items-start justify-center px-4 py-12">
     <div :class="`w-full ${maxWidth}`">
-      <div class="glass-card p-8">
+      <div class="glass-card p-5 sm:p-8">
         <slot />
       </div>
     </div>

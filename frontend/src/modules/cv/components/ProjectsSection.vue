@@ -13,28 +13,28 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
 </script>
 
 <template>
-  <section class="max-w-4xl mx-auto py-12 px-6">
-    <div class="flex items-center gap-4 mb-12">
-      <h2 class="text-3xl font-bold tracking-tight">Featured Projects</h2>
-      <div class="h-px flex-1 bg-gradient-to-r from-blue-500/50 to-transparent"></div>
+  <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+    <div class="flex items-center gap-4 mb-8 sm:mb-12">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Featured Projects</h2>
+      <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
     <div v-if="projects.length" class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div v-for="project in projects" :key="project.id"
         @click="emit('edit', project)"
-        class="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:bg-white/[0.08] hover:border-blue-500/40 transition-all duration-500 cursor-pointer">
-        <div v-if="project.cover" class="w-full h-44 overflow-hidden">
+        class="group bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:bg-white/8 hover:border-blue-500/40 transition-all duration-500 cursor-pointer">
+        <div v-if="project.cover" class="w-full h-32 sm:h-44 overflow-hidden">
           <img :src="project.cover" :alt="project.title"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
-        <div v-else class="w-full h-44 bg-slate-800/50 flex items-center justify-center">
+        <div v-else class="w-full h-32 sm:h-44 bg-slate-800/50 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
           </svg>
         </div>
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-4">
-            <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{{ project.title }}</h3>
+        <div class="p-4 sm:p-6">
+          <div class="flex flex-wrap justify-between items-start gap-2 mb-3 sm:mb-4">
+            <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{{ project.title }}</h3>
             <div class="flex gap-2" @click.stop>
               <a v-if="project.github_url" :href="project.github_url" target="_blank" class="text-slate-500 hover:text-white transition-colors" title="GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">

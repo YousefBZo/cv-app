@@ -53,7 +53,7 @@ const goTo = (path) => {
         </button>
 
         <router-link to="/" class="group flex items-center gap-2">
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-black text-xs shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-indigo-600 text-white font-black text-xs shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-shadow">
             {{ cvStore.userName?.charAt(0) || '?' }}
           </div>
           <span class="hidden sm:inline text-sm font-bold text-white">
@@ -77,17 +77,17 @@ const goTo = (path) => {
         <template v-if="authStore.isAuthenticated">
 
           <button @click="handleLogout"
-            class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-400/30 transition-all">
+            class="hidden md:inline-flex px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-400/30 transition-all">
             Logout
           </button>
         </template>
         <template v-else>
           <router-link to="/login"
-            class="px-4 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white border border-white/10 hover:border-white/20 transition-all">
+            class="hidden md:inline-flex px-4 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white border border-white/10 hover:border-white/20 transition-all">
             Sign In
           </router-link>
           <router-link to="/register"
-            class="px-4 py-1.5 rounded-lg text-xs font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+            class="hidden md:inline-flex px-4 py-1.5 rounded-lg text-xs font-medium text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
             Sign Up
           </router-link>
         </template>
@@ -108,6 +108,25 @@ const goTo = (path) => {
         class="block px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all">
         {{ link.icon }} {{ link.name }}
       </router-link>
+      <!-- Auth actions on mobile -->
+      <div class="border-t border-white/5 pt-2 mt-2 space-y-1">
+        <template v-if="authStore.isAuthenticated">
+          <button @click="handleLogout(); mobileOpen = false"
+            class="w-full text-left px-3 py-2 rounded-lg text-sm text-red-400 hover:bg-white/5 transition-all">
+            🚪 Logout
+          </button>
+        </template>
+        <template v-else>
+          <router-link to="/login" @click="mobileOpen = false"
+            class="block px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+            🔑 Sign In
+          </router-link>
+          <router-link to="/register" @click="mobileOpen = false"
+            class="block px-3 py-2 rounded-lg text-sm text-blue-400 hover:text-blue-300 hover:bg-white/5 transition-all">
+            🚀 Sign Up
+          </router-link>
+        </template>
+      </div>
     </div>
   </nav>
 
@@ -123,7 +142,7 @@ const goTo = (path) => {
       <!-- Sidebar header -->
       <div class="flex items-center justify-between p-5 border-b border-white/5">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-black">
+          <div class="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-black">
             {{ cvStore.userName?.charAt(0) || '?' }}
           </div>
           <div>
@@ -154,7 +173,7 @@ const goTo = (path) => {
       <!-- Sidebar footer -->
       <div class="p-4 border-t border-white/5">
         <button @click="goTo('/cv')"
-          class="w-full py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all text-center">
+          class="w-full py-2.5 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all text-center">
           👁 View My CV
         </button>
       </div>
