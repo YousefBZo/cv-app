@@ -1,0 +1,51 @@
+{
+  "Software Development": [
+    "JavaScript", "TypeScript", "Python", "Java", "C#", "C++", "PHP", "Ruby",
+    "Go", "Rust", "Swift", "Kotlin", "Dart", "Scala", "R", "MATLAB",
+    "HTML", "CSS", "SQL", "Bash", "PowerShell"
+  ],
+  "Frontend": [
+    "React", "Vue.js", "Angular", "Svelte", "Next.js", "Nuxt.js",
+    "Tailwind CSS", "Bootstrap", "SASS", "jQuery", "Redux", "Pinia",
+    "Webpack", "Vite", "Responsive Design", "Web Accessibility"
+  ],
+  "Backend": [
+    "Node.js", "Express.js", "Laravel", "Django", "Flask", "Spring Boot",
+    "ASP.NET", "Ruby on Rails", "FastAPI", "NestJS", "GraphQL", "REST API"
+  ],
+  "Database": [
+    "MySQL", "PostgreSQL", "MongoDB", "SQLite", "Redis", "Firebase",
+    "Elasticsearch", "Oracle", "SQL Server", "DynamoDB", "Cassandra"
+  ],
+  "DevOps & Cloud": [
+    "Docker", "Kubernetes", "AWS", "Azure", "Google Cloud", "CI/CD",
+    "Jenkins", "GitHub Actions", "Terraform", "Ansible", "Nginx", "Apache",
+    "Linux", "Serverless"
+  ],
+  "Mobile": [
+    "React Native", "Flutter", "iOS Development", "Android Development",
+    "Xamarin", "Ionic", "Swift UI", "Jetpack Compose"
+  ],
+  "Data Science & AI": [
+    "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch",
+    "Pandas", "NumPy", "Scikit-learn", "Data Visualization",
+    "Natural Language Processing", "Computer Vision", "Jupyter"
+  ],
+  "Design": [
+    "Figma", "Adobe XD", "Photoshop", "Illustrator", "UI/UX Design",
+    "Wireframing", "Prototyping", "Design Systems"
+  ],
+  "Project Management": [
+    "Agile", "Scrum", "Kanban", "JIRA", "Trello", "Confluence",
+    "Project Planning", "Risk Management", "Stakeholder Management"
+  ],
+  "Testing": [
+    "Unit Testing", "Integration Testing", "Jest", "PHPUnit", "Cypress",
+    "Selenium", "Postman", "TDD", "BDD", "Load Testing"
+  ],
+  "Other": [
+    "Git", "GitHub", "GitLab", "Bitbucket", "API Design",
+    "Microservices", "System Design", "Technical Writing",
+    "Problem Solving", "Communication", "Team Leadership"
+  ]
+}
