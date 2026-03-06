@@ -15,16 +15,16 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
 </script>
 
 <template>
-  <section class="max-w-4xl mx-auto py-12 px-6">
-    <div class="flex items-center gap-4 mb-12">
-      <h2 class="text-3xl font-bold tracking-tight text-white">Languages</h2>
-      <div class="h-px flex-1 bg-gradient-to-r from-blue-500/50 to-transparent"></div>
+  <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+    <div class="flex items-center gap-4 mb-8 sm:mb-12">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Languages</h2>
+      <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
     <div v-if="languages.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="lang in languages" :key="lang.id"
         @click="emit('edit', lang)"
-        class="bg-white/5 border border-white/10 p-5 rounded-2xl hover:bg-white/[0.08] hover:border-purple-500/30 transition-all duration-300 cursor-pointer">
+        class="bg-white/5 border border-white/10 p-5 rounded-2xl hover:bg-white/8 hover:border-purple-500/30 transition-all duration-300 cursor-pointer">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -43,7 +43,7 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
           </div>
         </div>
         <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full rounded-full bg-gradient-to-r transition-all duration-1000"
+          <div class="h-full rounded-full bg-linear-to-r transition-all duration-1000"
             :class="getLangLevel(lang.level).color"
             :style="{ width: isVisible ? getLangLevel(lang.level).width : '0%' }"></div>
         </div>

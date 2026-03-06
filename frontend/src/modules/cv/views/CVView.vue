@@ -9,8 +9,10 @@ import { useCVStore } from '@/modules/cv/stores/cv'
 import { usePagination } from '@/modules/cv/composables/usePagination'
 import { useEditModal } from '@/modules/cv/composables/useEditModal'
 import { useProfileModal } from '@/modules/cv/composables/useProfileModal'
+import { useDownloadCV } from '@/modules/cv/composables/useDownloadCV'
 
 import CVSkeleton from '@/modules/cv/components/CVSkeleton.vue'
+import CVPrintLayout from '@/modules/cv/components/CVPrintLayout.vue'
 import HeroSection from '@/modules/cv/components/HeroSection.vue'
 import ProjectsSection from '@/modules/cv/components/ProjectsSection.vue'
 import ExperienceSection from '@/modules/cv/components/ExperienceSection.vue'
@@ -41,6 +43,7 @@ const { displayed: displayedLanguages, hasMore: hasMoreLang, isExpanded: isExpan
 
 const editModal = useEditModal()
 const profileModal = useProfileModal()
+const { generating, downloadCV } = useDownloadCV()
 
 function onEditItem(section, item) {
   const titles = {
@@ -68,13 +71,37 @@ function onEditItem(section, item) {
         <h2 class="text-2xl font-bold text-white">No Profile Yet</h2>
         <p class="text-slate-400">You haven't created your profile yet. Create one to start building your CV!</p>
         <router-link to="/profile"
-          class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+          class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
           Create Profile →
         </router-link>
       </div>
     </div>
 
     <template v-else>
+      <!-- Download CV floating button -->
+      <div class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50">
+        <button
+          @click="downloadCV(cvStore.userName)"
+          :disabled="generating"
+          class="group flex items-center justify-center gap-2 sm:gap-2.5 p-3.5 sm:pl-5 sm:pr-6 sm:py-3.5 rounded-full text-sm font-semibold text-white shadow-xl transition-all duration-300"
+          :class="generating
+            ? 'bg-slate-700 cursor-wait'
+            : 'bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 hover:shadow-blue-500/30 hover:scale-105 active:scale-95'"
+          title="Download CV as PDF"
+        >
+          <!-- Spinner when generating -->
+          <svg v-if="generating" class="h-5 w-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          <!-- Download icon -->
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
+          </svg>
+          <span class="hidden sm:inline">{{ generating ? 'Generating...' : 'Download CV' }}</span>
+        </button>
+      </div>
+
       <HeroSection :isVisible="isVisible" @edit="profileModal.open()" />
 
       <ProjectsSection v-if="isVisible"
@@ -139,5 +166,8 @@ function onEditItem(section, item) {
       @deleteAccount="profileModal.deleteAccount"
       @photoChange="profileModal.onPhotoChange"
     />
+
+    <!-- Hidden print-optimized layout for PDF generation -->
+    <CVPrintLayout />
   </div>
 </template>
