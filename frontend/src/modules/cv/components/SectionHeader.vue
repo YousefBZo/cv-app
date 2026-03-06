@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="flex items-center gap-3 mb-8">
-    <div :class="`w-10 h-10 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-lg`">
+    <div :class="`w-10 h-10 rounded-xl bg-linear-to-br ${gradient} flex items-center justify-center text-lg`">
       {{ icon }}
     </div>
     <div>

@@ -52,17 +52,17 @@ const emit = defineEmits([
     <div class="flex gap-1 mb-6 bg-white/5 rounded-xl p-1">
       <button @click="emit('update:tab', 'profile')"
         :class="tab === 'profile' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-        class="flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+        class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
         Profile
       </button>
       <button @click="emit('update:tab', 'account')"
         :class="tab === 'account' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-        class="flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+        class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
         Account
       </button>
       <button @click="emit('update:tab', 'password')"
         :class="tab === 'password' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-        class="flex-1 py-2 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+        class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
         Password
       </button>
     </div>

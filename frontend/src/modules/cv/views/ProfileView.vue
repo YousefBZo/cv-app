@@ -188,18 +188,18 @@ const handleDeleteAccount = async () => {
       <div v-if="isEditMode" class="flex gap-1 mb-6 bg-white/5 rounded-xl p-1">
         <button @click="activeTab = 'profile'"
           :class="activeTab === 'profile' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-          class="flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          👤 Profile
+          class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+          <span class="hidden sm:inline">👤 </span>Profile
         </button>
         <button @click="activeTab = 'account'"
           :class="activeTab === 'account' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-          class="flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          ⚙️ Account
+          class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+          <span class="hidden sm:inline">⚙️ </span>Account
         </button>
         <button @click="activeTab = 'password'"
           :class="activeTab === 'password' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
-          class="flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          🔒 Password
+          class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+          <span class="hidden sm:inline">🔒 </span>Password
         </button>
       </div>
 

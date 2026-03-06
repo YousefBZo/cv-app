@@ -56,7 +56,7 @@ const handleSubmit = () => {
       <div class="text-5xl">⚠️</div>
       <h2 class="text-xl font-bold text-white">Profile Required</h2>
       <p class="text-slate-400 text-sm">You need to create your profile before adding certifications.</p>
-      <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
+      <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
         Create Profile →
       </router-link>
     </div>

@@ -14,7 +14,7 @@ const emit = defineEmits(['close', 'delete'])
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="visible" class="fixed inset-0 z-[90] flex items-center justify-center p-4">
+      <div v-if="visible" class="fixed inset-0 z-90 flex items-center justify-center p-4">
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="emit('close')"></div>
 

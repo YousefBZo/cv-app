@@ -22,11 +22,11 @@ import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
     style="background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);">
 
     <!-- 1. HERO SKELETON -->
-    <section class="flex flex-col items-center justify-center py-24 px-6">
+    <section class="flex flex-col items-center justify-center py-14 sm:py-24 px-4 sm:px-6">
       <!-- Avatar -->
-      <SkeletonPulse class="w-44 h-44 rounded-full mb-8" />
+      <SkeletonPulse class="w-32 h-32 sm:w-44 sm:h-44 rounded-full mb-8" />
       <!-- Headline -->
-      <SkeletonPulse class="h-12 w-80 max-w-full mb-4 rounded-xl" />
+      <SkeletonPulse class="h-10 sm:h-12 w-64 sm:w-80 max-w-full mb-4 rounded-xl" />
       <!-- Summary -->
       <SkeletonPulse class="h-5 w-96 max-w-full mb-2" />
       <SkeletonPulse class="h-5 w-72 max-w-full mb-6" />
@@ -35,10 +35,10 @@ import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
     </section>
 
     <!-- 2. PROJECTS SKELETON -->
-    <section class="max-w-4xl mx-auto py-12 px-6">
-      <div class="flex items-center gap-4 mb-12">
+    <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+      <div class="flex items-center gap-4 mb-8 sm:mb-12">
         <SkeletonPulse class="h-8 w-56" />
-        <div class="h-px flex-1 bg-gradient-to-r from-white/5 to-transparent" />
+        <div class="h-px flex-1 bg-linear-to-r from-white/5 to-transparent" />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div v-for="i in 2" :key="i" class="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
@@ -54,14 +54,14 @@ import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
     </section>
 
     <!-- 3. EXPERIENCE SKELETON -->
-    <section class="max-w-4xl mx-auto py-12 px-6">
-      <div class="flex items-center gap-4 mb-12">
+    <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+      <div class="flex items-center gap-4 mb-8 sm:mb-12">
         <SkeletonPulse class="h-8 w-40" />
-        <div class="h-px flex-1 bg-gradient-to-r from-white/5 to-transparent" />
+        <div class="h-px flex-1 bg-linear-to-r from-white/5 to-transparent" />
       </div>
       <div class="relative border-l border-slate-700/50 ml-3 space-y-12">
         <div v-for="i in 3" :key="i" class="relative pl-8">
-          <div class="absolute -left-[9px] top-2 w-4 h-4 rounded-full bg-slate-800 border-2 border-slate-600" />
+          <div class="absolute -left-2.25 top-2 w-4 h-4 rounded-full bg-slate-800 border-2 border-slate-600" />
           <div class="bg-white/5 border border-white/10 p-6 rounded-2xl space-y-3">
             <div class="flex justify-between items-start">
               <div class="space-y-2">
@@ -78,10 +78,10 @@ import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
     </section>
 
     <!-- 4. SKILLS SKELETON -->
-    <section class="max-w-4xl mx-auto py-12 px-6">
-      <div class="flex items-center gap-4 mb-12">
+    <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+      <div class="flex items-center gap-4 mb-8 sm:mb-12">
         <SkeletonPulse class="h-8 w-28" />
-        <div class="h-px flex-1 bg-gradient-to-r from-white/5 to-transparent" />
+        <div class="h-px flex-1 bg-linear-to-r from-white/5 to-transparent" />
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="i in 6" :key="i" class="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-3">
@@ -93,10 +93,10 @@ import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
     </section>
 
     <!-- 5. EDUCATION SKELETON -->
-    <section class="max-w-4xl mx-auto py-12 px-6">
-      <div class="flex items-center gap-4 mb-12">
+    <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
+      <div class="flex items-center gap-4 mb-8 sm:mb-12">
         <SkeletonPulse class="h-8 w-36" />
-        <div class="h-px flex-1 bg-gradient-to-r from-white/5 to-transparent" />
+        <div class="h-px flex-1 bg-linear-to-r from-white/5 to-transparent" />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div v-for="i in 2" :key="i" class="bg-white/5 border border-white/10 p-6 rounded-2xl">
