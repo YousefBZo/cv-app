@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import http from '@/api/http'
 import { useFormSubmit } from '@/modules/cv/composables/useFormSubmit'
 import { useProfileGuard } from '@/modules/cv/composables/useProfileGuard'
@@ -9,6 +10,7 @@ import SectionHeader from '@/modules/cv/components/SectionHeader.vue'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const { hasProfile, profileLoading } = useProfileGuard()
 
@@ -16,14 +18,14 @@ const availableLanguages = ref({})
 const selectedLanguages = ref([])
 const searchQuery = ref('')
 
-const levels = [
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'elementary', label: 'Elementary' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'upper_intermediate', label: 'Upper Intermediate' },
-  { value: 'advanced', label: 'Advanced' },
-  { value: 'native', label: 'Native' },
-]
+const levels = computed(() => [
+  { value: 'beginner', label: t('levels.beginner') },
+  { value: 'elementary', label: t('levels.elementary') },
+  { value: 'intermediate', label: t('levels.intermediate') },
+  { value: 'upper_intermediate', label: t('levels.upper_intermediate') },
+  { value: 'advanced', label: t('levels.advanced') },
+  { value: 'native', label: t('levels.native') },
+])
 
 const filteredLanguages = computed(() => {
   const entries = Object.entries(availableLanguages.value)
@@ -50,7 +52,7 @@ const { errors, loading, submit } = useFormSubmit('/language', {
 
 const handleSubmit = () => {
   if (selectedLanguages.value.length === 0) {
-    errors.value = { general: ['Select at least one language.'] }
+    errors.value = { general: [t('validation.selectOneLanguage')] }
     return
   }
   submit({ languages: selectedLanguages.value })
@@ -74,23 +76,23 @@ onMounted(async () => {
 
     <div v-else-if="hasProfile === false" class="text-center py-12 space-y-4">
       <div class="text-5xl">⚠️</div>
-      <h2 class="text-xl font-bold text-white">Profile Required</h2>
-      <p class="text-slate-400 text-sm">You need to create your profile before adding languages.</p>
+      <h2 class="text-xl font-bold text-white">{{ t('forms.profileRequired') }}</h2>
+      <p class="text-slate-400 text-sm">{{ t('forms.profileRequiredText', { section: t('sidebar.languages').toLowerCase() }) }}</p>
       <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
-        Create Profile →
+        {{ t('forms.createProfileLink') }}
       </router-link>
     </div>
 
     <template v-else>
-    <SectionHeader icon="🌍" title="Languages" subtitle="Add languages you speak"
+    <SectionHeader icon="🌍" :title="t('forms.languagesTitle')" :subtitle="t('forms.languagesSubtitle')"
       gradient="from-green-500 to-emerald-500" />
 
     <ErrorAlert :error="errors.general?.[0] ?? ''" />
 
     <!-- Search -->
     <div class="mb-5">
-      <label class="label-dark">Search Language</label>
-      <input type="text" v-model="searchQuery" placeholder="Type to search (e.g. English, French)..." class="input-dark" />
+      <label class="label-dark">{{ t('forms.searchLanguage') }}</label>
+      <input type="text" v-model="searchQuery" :placeholder="t('forms.searchLanguagePlaceholder')" class="input-dark" />
 
       <div v-if="searchQuery.trim()"
         class="mt-1 max-h-48 overflow-y-auto rounded-lg bg-slate-900 border border-white/10 shadow-xl">
@@ -98,7 +100,7 @@ onMounted(async () => {
           class="block w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors">
           {{ name }}
         </button>
-        <p v-if="filteredLanguages.length === 0" class="px-4 py-3 text-xs text-slate-600">No results found</p>
+        <p v-if="filteredLanguages.length === 0" class="px-4 py-3 text-xs text-slate-600">{{ t('forms.noResults') }}</p>
       </div>
     </div>
 
@@ -120,7 +122,7 @@ onMounted(async () => {
 
     <button @click="handleSubmit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">
       <LoadingSpinner v-if="loading" />
-      {{ loading ? 'Saving...' : 'Save Languages' }}
+      {{ loading ? t('forms.saving') : t('forms.saveLanguages') }}
     </button>
     </template>
   </FormCard>

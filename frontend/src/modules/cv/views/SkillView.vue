@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import http from '@/api/http'
 import { useFormSubmit } from '@/modules/cv/composables/useFormSubmit'
 import { useProfileGuard } from '@/modules/cv/composables/useProfileGuard'
@@ -9,6 +10,7 @@ import SectionHeader from '@/modules/cv/components/SectionHeader.vue'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const { hasProfile, profileLoading } = useProfileGuard()
 
@@ -18,12 +20,12 @@ const searchQuery = ref('')
 const searchInput = ref(null)
 const inputFocused = ref(false)
 
-const levels = [
-  { value: 'beginner', label: 'Beginner' },
-  { value: 'intermediate', label: 'Intermediate' },
-  { value: 'advanced', label: 'Advanced' },
-  { value: 'expert', label: 'Expert' },
-]
+const levels = computed(() => [
+  { value: 'beginner', label: t('levels.beginner') },
+  { value: 'intermediate', label: t('levels.intermediate') },
+  { value: 'advanced', label: t('levels.advanced') },
+  { value: 'expert', label: t('levels.expert') },
+])
 
 const flatSkills = computed(() => {
   const all = []
@@ -67,7 +69,7 @@ const { errors, loading, submit } = useFormSubmit('/skill', {
 
 const handleSubmit = () => {
   if (selectedSkills.value.length === 0) {
-    errors.value = { general: ['Select at least one skill.'] }
+    errors.value = { general: [t('validation.selectOneSkill')] }
     return
   }
   submit({ skills: selectedSkills.value })
@@ -91,25 +93,25 @@ onMounted(async () => {
 
     <div v-else-if="hasProfile === false" class="text-center py-12 space-y-4">
       <div class="text-5xl">⚠️</div>
-      <h2 class="text-xl font-bold text-white">Profile Required</h2>
-      <p class="text-slate-400 text-sm">You need to create your profile before adding skills.</p>
+      <h2 class="text-xl font-bold text-white">{{ t('forms.profileRequired') }}</h2>
+      <p class="text-slate-400 text-sm">{{ t('forms.profileRequiredText', { section: t('sidebar.skills').toLowerCase() }) }}</p>
       <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
-        Create Profile →
+        {{ t('forms.createProfileLink') }}
       </router-link>
     </div>
 
     <template v-else>
-    <SectionHeader icon="⚡" title="Skills" subtitle="Add your technical abilities"
+    <SectionHeader icon="⚡" :title="t('forms.skillsTitle')" :subtitle="t('forms.skillsSubtitle')"
       gradient="from-amber-500 to-orange-500" />
 
     <ErrorAlert :error="errors.general?.[0] ?? ''" />
 
     <!-- Search -->
     <div class="mb-5">
-      <label class="label-dark">Search Skill</label>
+      <label class="label-dark">{{ t('forms.searchSkill') }}</label>
       <input type="text" ref="searchInput" v-model="searchQuery"
         @focus="inputFocused = true" @blur="handleBlur"
-        placeholder="Type to search (e.g. Laravel, React, Python)..." class="input-dark" />
+        :placeholder="t('forms.searchSkillPlaceholder')" class="input-dark" />
 
       <div v-if="searchQuery"
         class="mt-1 max-h-48 overflow-y-auto rounded-lg bg-slate-900 border border-white/10 shadow-xl">
@@ -118,7 +120,7 @@ onMounted(async () => {
           <span>{{ skill.name }}</span>
           <span class="text-slate-600 ml-1 text-xs">({{ skill.category }})</span>
         </button>
-        <p v-if="filteredSkills.length === 0" class="px-4 py-3 text-xs text-slate-600">No results found</p>
+        <p v-if="filteredSkills.length === 0" class="px-4 py-3 text-xs text-slate-600">{{ t('forms.noResults') }}</p>
       </div>
     </div>
 
@@ -140,7 +142,7 @@ onMounted(async () => {
 
     <button @click="handleSubmit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">
       <LoadingSpinner v-if="loading" />
-      {{ loading ? 'Saving...' : 'Save Skills' }}
+      {{ loading ? t('forms.saving') : t('forms.saveSkills') }}
     </button>
     </template>
   </FormCard>

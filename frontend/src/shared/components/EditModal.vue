@@ -1,5 +1,6 @@
 <script setup>
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
+import { useI18n } from 'vue-i18n'
 
 defineProps({
   visible: { type: Boolean, default: false },
@@ -9,6 +10,7 @@ defineProps({
 })
 
 const emit = defineEmits(['close', 'delete'])
+const { t } = useI18n()
 </script>
 
 <template>
@@ -41,12 +43,12 @@ const emit = defineEmits(['close', 'delete'])
             <button v-if="showDelete" @click="emit('delete')" :disabled="loading"
               class="px-4 py-2 rounded-lg text-xs font-semibold text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all disabled:opacity-50">
               <span v-if="loading"><LoadingSpinner /></span>
-              <span v-else>🗑 Delete</span>
+              <span v-else>🗑 {{ t('forms.delete') }}</span>
             </button>
             <div v-else></div>
             <button @click="emit('close')"
               class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 border border-white/10 hover:bg-white/5 transition-all">
-              Cancel
+              {{ t('forms.cancel') }}
             </button>
           </div>
         </div>

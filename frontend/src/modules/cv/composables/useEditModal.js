@@ -1,6 +1,7 @@
 import { ref, reactive } from 'vue'
 import { useCVStore } from '@/modules/cv/stores/cv'
 import { useToastStore } from '@/shared/stores/toast'
+import i18n from '@/i18n'
 import {
   validateExperience,
   validateEducation,
@@ -96,7 +97,7 @@ export function useEditModal() {
       if (err.response?.status === 422) {
         errors.value = err.response.data.errors || {}
       } else {
-        errors.value = { general: [err.response?.data?.message || 'Something went wrong. Please try again.'] }
+        errors.value = { general: [err.response?.data?.message || i18n.global.t('validation.genericError')] }
       }
     } finally {
       loading.value = false
@@ -105,7 +106,7 @@ export function useEditModal() {
 
   /** Delete the current item after confirmation */
   async function remove() {
-    if (!confirm('Are you sure you want to delete this item?')) return
+    if (!confirm(i18n.global.t('forms.deleteItemConfirm'))) return
     loading.value = true
     try {
       await cvStore.deleteItem(section.value, itemId.value)

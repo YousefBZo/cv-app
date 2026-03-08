@@ -1,8 +1,6 @@
 <script setup>
-/**
- * ProjectsSection — grid of project cards.
- * Receives pagination data via props, emits 'edit' with the project item.
- */
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   projects: { type: Array, default: () => [] },
   hasMore: { type: Boolean, default: false },
@@ -10,12 +8,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Featured Projects</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{{ t('cv.featuredProjects') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -52,19 +51,19 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
           <div class="text-xs text-blue-400 font-semibold">
             {{ project.start_date?.substring(0, 10) ?? '' }}
             <span v-if="project.end_date"> — {{ project.end_date?.substring(0, 10) }}</span>
-            <span v-else-if="project.start_date"> — Present</span>
+            <span v-else-if="project.start_date"> — {{ t('cv.present') }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No projects added yet. <router-link to="/project" class="text-blue-400 hover:underline">Add one →</router-link>
+      {{ t('cv.noProjects') }} <router-link to="/project" class="text-blue-400 hover:underline">{{ t('cv.addProject') }}</router-link>
     </p>
 
     <div class="mt-8 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 font-bold uppercase text-xs tracking-widest hover:underline">+ More Projects</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 font-bold uppercase text-xs tracking-widest hover:underline">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 font-bold uppercase text-xs tracking-widest hover:underline">{{ t('cv.moreProjects') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 font-bold uppercase text-xs tracking-widest hover:underline">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

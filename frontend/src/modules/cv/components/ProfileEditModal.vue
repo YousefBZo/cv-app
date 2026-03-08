@@ -7,7 +7,9 @@
 import EditModal from '@/shared/components/EditModal.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 import { useAuthStore } from '@/modules/auth/stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 
 const props = defineProps({
@@ -42,7 +44,7 @@ const emit = defineEmits([
 <template>
   <EditModal
     :visible="visible"
-    title="Edit Profile & Account"
+    :title="t('forms.editProfile')"
     :loading="profileLoading"
     show-delete
     @close="emit('close')"
@@ -53,24 +55,24 @@ const emit = defineEmits([
       <button @click="emit('update:tab', 'profile')"
         :class="tab === 'profile' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
         class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-        Profile
+        {{ t('forms.profileTab') }}
       </button>
       <button @click="emit('update:tab', 'account')"
         :class="tab === 'account' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
         class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-        Account
+        {{ t('forms.accountTab') }}
       </button>
       <button @click="emit('update:tab', 'password')"
         :class="tab === 'password' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
         class="flex-1 py-2 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-        Password
+        {{ t('forms.passwordTab') }}
       </button>
     </div>
 
     <!-- ── PROFILE TAB ── -->
     <form v-if="tab === 'profile'" @submit.prevent="emit('saveProfile')" class="space-y-4">
       <div>
-        <label class="label-dark">Profile Photo</label>
+        <label class="label-dark">{{ t('forms.profilePhoto') }}</label>
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center shrink-0">
             <img v-if="profilePhotoPreview" :src="profilePhotoPreview" alt="Preview" class="w-full h-full object-cover" />
@@ -81,72 +83,72 @@ const emit = defineEmits([
         <p v-if="profileErrors.photo" class="text-red-400 text-xs mt-1">{{ profileErrors.photo[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">Headline</label>
-        <input v-model="profileForm.headline" class="input-dark" placeholder="e.g. Full Stack Developer" />
+        <label class="label-dark">{{ t('forms.headline') }}</label>
+        <input v-model="profileForm.headline" class="input-dark" :placeholder="t('forms.headlinePlaceholder')" />
         <p v-if="profileErrors.headline" class="text-red-400 text-xs mt-1">{{ profileErrors.headline[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">Summary</label>
-        <textarea v-model="profileForm.summary" rows="3" class="input-dark resize-none" placeholder="Write about yourself..."></textarea>
+        <label class="label-dark">{{ t('forms.summary') }}</label>
+        <textarea v-model="profileForm.summary" rows="3" class="input-dark resize-none" :placeholder="t('forms.summaryPlaceholder')"></textarea>
         <p v-if="profileErrors.summary" class="text-red-400 text-xs mt-1">{{ profileErrors.summary[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">Location</label>
-        <input v-model="profileForm.location" class="input-dark" placeholder="e.g. New York, USA" />
+        <label class="label-dark">{{ t('forms.location') }}</label>
+        <input v-model="profileForm.location" class="input-dark" :placeholder="t('forms.locationPlaceholder')" />
         <p v-if="profileErrors.location" class="text-red-400 text-xs mt-1">{{ profileErrors.location[0] }}</p>
       </div>
       <button type="submit" :disabled="profileLoading" class="btn-primary w-full flex items-center justify-center gap-2">
-        <LoadingSpinner v-if="profileLoading" /> {{ profileLoading ? 'Saving...' : 'Update Profile' }}
+        <LoadingSpinner v-if="profileLoading" /> {{ profileLoading ? t('forms.saving') : t('forms.updateProfile') }}
       </button>
     </form>
 
     <!-- ── ACCOUNT TAB ── -->
     <form v-else-if="tab === 'account'" @submit.prevent="emit('saveUserName')" class="space-y-4">
       <div class="text-center mb-2">
-        <p class="text-sm text-slate-400">Update your display name. Your email cannot be changed.</p>
+        <p class="text-sm text-slate-400">{{ t('forms.updateNameDesc') }}</p>
       </div>
       <div>
-        <label class="label-dark">Display Name</label>
-        <input v-model="userNameForm.name" class="input-dark" placeholder="Your name" />
+        <label class="label-dark">{{ t('forms.displayName') }}</label>
+        <input v-model="userNameForm.name" class="input-dark" :placeholder="t('forms.displayNamePlaceholder')" />
         <p v-if="userNameErrors.name" class="text-red-400 text-xs mt-1">{{ userNameErrors.name[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">Email</label>
+        <label class="label-dark">{{ t('forms.email') }}</label>
         <input :value="authStore.user?.email" class="input-dark opacity-50 cursor-not-allowed" disabled />
-        <p class="text-slate-600 text-xs mt-1">Email cannot be changed.</p>
+        <p class="text-slate-600 text-xs mt-1">{{ t('forms.emailCannotChange') }}</p>
       </div>
       <button type="submit" :disabled="userNameLoading" class="btn-primary w-full flex items-center justify-center gap-2">
-        <LoadingSpinner v-if="userNameLoading" /> {{ userNameLoading ? 'Saving...' : 'Update Name' }}
+        <LoadingSpinner v-if="userNameLoading" /> {{ userNameLoading ? t('forms.saving') : t('forms.updateName') }}
       </button>
     </form>
 
     <!-- ── PASSWORD TAB ── -->
     <form v-else-if="tab === 'password'" @submit.prevent="emit('savePassword')" class="space-y-4">
       <div class="text-center mb-2">
-        <p class="text-sm text-slate-400">Change your account password.</p>
+        <p class="text-sm text-slate-400">{{ t('forms.changePasswordDesc') }}</p>
       </div>
       <div>
-        <label class="label-dark">Current Password</label>
-        <input type="password" v-model="passwordForm.current_password" class="input-dark" placeholder="Enter current password" />
+        <label class="label-dark">{{ t('forms.currentPassword') }}</label>
+        <input type="password" v-model="passwordForm.current_password" class="input-dark" :placeholder="t('forms.currentPasswordPlaceholder')" />
         <p v-if="passwordErrors.current_password" class="text-red-400 text-xs mt-1">{{ passwordErrors.current_password[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">New Password</label>
-        <input type="password" v-model="passwordForm.password" class="input-dark" placeholder="Min 8 characters" />
+        <label class="label-dark">{{ t('forms.newPassword') }}</label>
+        <input type="password" v-model="passwordForm.password" class="input-dark" :placeholder="t('forms.newPasswordPlaceholder')" />
         <p v-if="passwordErrors.password" class="text-red-400 text-xs mt-1">{{ passwordErrors.password[0] }}</p>
       </div>
       <div>
-        <label class="label-dark">Confirm New Password</label>
-        <input type="password" v-model="passwordForm.password_confirmation" class="input-dark" placeholder="Repeat new password" />
+        <label class="label-dark">{{ t('forms.confirmNewPassword') }}</label>
+        <input type="password" v-model="passwordForm.password_confirmation" class="input-dark" :placeholder="t('forms.confirmNewPasswordPlaceholder')" />
         <p v-if="passwordErrors.password_confirmation" class="text-red-400 text-xs mt-1">{{ passwordErrors.password_confirmation[0] }}</p>
       </div>
       <button type="submit" :disabled="passwordLoading" class="btn-primary w-full flex items-center justify-center gap-2">
-        <LoadingSpinner v-if="passwordLoading" /> {{ passwordLoading ? 'Updating...' : 'Change Password' }}
+        <LoadingSpinner v-if="passwordLoading" /> {{ passwordLoading ? t('forms.updating') : t('forms.changePassword') }}
       </button>
     </form>
 
     <div class="mt-4 pt-4 border-t border-white/5">
-      <p class="text-xs text-slate-600 text-center">The Delete button below will permanently delete your entire account.</p>
+      <p class="text-xs text-slate-600 text-center">{{ t('forms.deleteAccountFooter') }}</p>
     </div>
   </EditModal>
 </template>

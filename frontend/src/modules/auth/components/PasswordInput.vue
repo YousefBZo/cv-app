@@ -15,23 +15,14 @@ const show = ref(false)
 
 <template>
   <div class="relative">
-    <input
-      :type="show ? 'text' : 'password'"
-      :id="id"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-      required
-      :placeholder="placeholder"
-      class="input-dark pr-10"
-    />
-    <button
-      type="button"
-      @click="show = !show"
-      class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
-    >
+    <!-- RTL support: use logical positioning for the eye icon -->
+    <input :type="show ? 'text' : 'password'" :id="id" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)" required :placeholder="placeholder"
+      class="input-dark pe-10" />
+    <button type="button" @click="show = !show"
+      class="absolute end-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
       <svg v-if="!show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>

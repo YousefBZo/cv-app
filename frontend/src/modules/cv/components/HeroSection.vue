@@ -1,9 +1,6 @@
 <script setup>
-/**
- * HeroSection — the profile hero banner at the top of the CV page.
- * Receives profile data via props, emits 'edit' when clicked.
- */
 import { useCVStore } from '@/modules/cv/stores/cv'
+import { useI18n } from 'vue-i18n'
 
 defineProps({
   isVisible: { type: Boolean, default: false },
@@ -11,6 +8,7 @@ defineProps({
 
 const emit = defineEmits(['edit'])
 const cvStore = useCVStore()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -20,14 +18,14 @@ const cvStore = useCVStore()
     @click="emit('edit')"
   >
     <div class="absolute top-16 right-4 sm:top-28 sm:right-8 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-blue-400 font-medium">
-      ✏️ Click to edit profile
+      ✏️ {{ t('cv.clickToEdit') }}
     </div>
     <div class="relative mb-8">
       <div class="absolute -inset-1 bg-linear-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
       <div class="relative bg-slate-900 rounded-full p-1 border border-white/10 shadow-2xl">
         <img v-if="cvStore.profilePhoto" :src="cvStore.profilePhoto" alt="Profile" class="rounded-full w-32 h-32 sm:w-44 sm:h-44 object-cover" />
         <div v-else class="rounded-full w-32 h-32 sm:w-44 sm:h-44 bg-slate-800 flex items-center justify-center text-slate-400 border border-dashed border-slate-600">
-          <span class="text-sm font-medium uppercase tracking-widest text-center px-4">No Photo</span>
+          <span class="text-sm font-medium uppercase tracking-widest text-center px-4">{{ t('cv.noPhoto') }}</span>
         </div>
       </div>
     </div>

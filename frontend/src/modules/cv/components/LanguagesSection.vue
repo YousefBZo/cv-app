@@ -1,7 +1,5 @@
 <script setup>
-/**
- * LanguagesSection — grid of language cards with animated level bars.
- */
+import { useI18n } from 'vue-i18n'
 import { getLangLevel } from '@/modules/cv/composables/useLevelHelpers'
 
 defineProps({
@@ -12,12 +10,20 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
+
+/** Translate a raw level value (from DB) using the levels.* keys */
+function translateLevel(level) {
+  if (!level) return t('levels.intermediate')
+  const key = String(level).toLowerCase().replace(/\s+/g, '_')
+  return t(`levels.${key}`, level) // fallback to raw value if key not found
+}
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Languages</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.languagesTitle') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -39,7 +45,7 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
               'text-amber-400': getLangLevel(lang.level).color.includes('amber'),
               'text-rose-400': getLangLevel(lang.level).color.includes('rose'),
               'text-slate-400': getLangLevel(lang.level).color.includes('slate'),
-            }">{{ getLangLevel(lang.level).label }}</p>
+            }">{{ translateLevel(lang.level) }}</p>
           </div>
         </div>
         <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -51,12 +57,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No languages added yet. <router-link to="/language" class="text-purple-400 hover:underline">Add some →</router-link>
+      {{ t('cv.noLanguages') }} <router-link to="/language" class="text-purple-400 hover:underline">{{ t('cv.addLanguages') }}</router-link>
     </p>
 
     <div class="mt-8 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="text-purple-400 text-xs font-bold uppercase tracking-widest hover:underline">+ See All Languages</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 text-xs font-bold uppercase tracking-widest hover:underline">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="text-purple-400 text-xs font-bold uppercase tracking-widest hover:underline">{{ t('cv.seeAllLanguages') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 text-xs font-bold uppercase tracking-widest hover:underline">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

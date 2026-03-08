@@ -18,7 +18,7 @@ const typeIcons = {
 
 <template>
   <Teleport to="body">
-    <div class="fixed top-4 right-4 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+    <div class="fixed top-4 right-4 rtl:right-auto rtl:left-4 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
       <TransitionGroup name="toast">
         <div v-for="toast in toastStore.toasts" :key="toast.id"
           class="pointer-events-auto flex items-start gap-3 px-4 py-3 rounded-xl border backdrop-blur-xl shadow-2xl transition-all duration-300"
@@ -39,5 +39,9 @@ const typeIcons = {
 .toast-enter-from { opacity: 0; transform: translateX(100px); }
 .toast-leave-to { opacity: 0; transform: translateX(100px); }
 .toast-move { transition: transform 0.3s ease; }
+
+/* RTL: slide from left instead of right */
+[dir="rtl"] .toast-enter-from { transform: translateX(-100px); }
+[dir="rtl"] .toast-leave-to { transform: translateX(-100px); }
 </style>
 

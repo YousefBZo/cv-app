@@ -1,7 +1,6 @@
 <script setup>
-/**
- * ExperienceSection — timeline of work experiences.
- */
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   experiences: { type: Array, default: () => [] },
   hasMore: { type: Boolean, default: false },
@@ -9,12 +8,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Experience</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.experience') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -29,7 +29,7 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
               <p class="text-blue-400 font-medium text-sm uppercase">{{ exp.company }}</p>
             </div>
             <div class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold">
-              {{ exp.start_date?.substring(0, 10) }} — {{ exp.end_date?.substring(0, 10) || 'Present' }}
+              {{ exp.start_date?.substring(0, 10) }} — {{ exp.end_date?.substring(0, 10) || t('cv.present') }}
             </div>
           </div>
           <p class="text-slate-400 leading-relaxed text-sm whitespace-pre-line">{{ exp.description }}</p>
@@ -38,12 +38,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No experience added yet. <router-link to="/experience" class="text-blue-400 hover:underline">Add one →</router-link>
+      {{ t('cv.noExperience') }} <router-link to="/experience" class="text-blue-400 hover:underline">{{ t('cv.addExperience') }}</router-link>
     </p>
 
     <div class="mt-12 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 font-bold uppercase text-xs tracking-widest">+ View All Experience</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 font-bold uppercase text-xs tracking-widest hover:underline">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 font-bold uppercase text-xs tracking-widest">{{ t('cv.viewAllExperience') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 font-bold uppercase text-xs tracking-widest hover:underline">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import http from '@/api/http'
+import i18n from '@/i18n'
 
 /**
  * Reusable form submission composable.
@@ -56,18 +57,19 @@ export function useFormSubmit(endpoint, options = {}) {
 
       return response
     } catch (error) {
+      const t = i18n.global.t
       if (error.response?.status === 422) {
         errors.value = error.response.data.errors || {}
       } else if (error.response?.status === 409) {
-        errors.value = { general: ['This record already exists.'] }
+        errors.value = { general: [t('validation.recordExists')] }
       } else if (error.response?.status === 404) {
-        errors.value = { general: [error.response.data?.message || 'Resource not found.'] }
+        errors.value = { general: [error.response.data?.message || t('validation.notFoundError')] }
       } else if (error.response?.status === 403) {
-        errors.value = { general: [error.response.data?.message || 'You do not have permission.'] }
+        errors.value = { general: [error.response.data?.message || t('validation.permissionError')] }
       } else if (!error.response) {
-        errors.value = { general: ['Network error. Please check your connection.'] }
+        errors.value = { general: [t('validation.networkError')] }
       } else {
-        errors.value = { general: ['Something went wrong. Please try again.'] }
+        errors.value = { general: [t('validation.genericError')] }
       }
       throw error
     } finally {

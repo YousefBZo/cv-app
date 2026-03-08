@@ -1,4 +1,5 @@
 import axios from 'axios'
+import i18n from '@/i18n'
 
 export const BASE_URL = 'http://localhost:8082'
 export const API_URL = `${BASE_URL}/api/v1`
@@ -35,9 +36,11 @@ http.interceptors.response.use(
       }
     }
 
+    const t = i18n.global.t
+
     // Network error (server down, no connection)
     if (!error.response) {
-      showGlobalToast('Network error — please check your connection or the server may be down.')
+      showGlobalToast(t('toast.networkError'))
       return Promise.reject(error)
     }
 
@@ -47,32 +50,32 @@ http.interceptors.response.use(
     switch (status) {
       case 401:
         localStorage.removeItem('auth_token')
-        showGlobalToast('Session expired. Please log in again.', 'warning')
+        showGlobalToast(t('toast.sessionExpired'), 'warning')
         break
       case 403:
-        showGlobalToast(message || 'You do not have permission to perform this action.')
+        showGlobalToast(message || t('toast.forbidden'))
         break
       case 404:
         // Don't toast 404s for profile check — handled by views
         if (!message.includes('Profile not found')) {
-          showGlobalToast(message || 'The requested resource was not found.')
+          showGlobalToast(message || t('toast.notFound'))
         }
         break
       case 409:
-        showGlobalToast(message || 'This record already exists.')
+        showGlobalToast(message || t('toast.conflict'))
         break
       case 422:
         // Validation errors — handled by form components, no global toast
         break
       case 429:
-        showGlobalToast('Too many requests. Please slow down.')
+        showGlobalToast(t('toast.tooMany'))
         break
       case 500:
-        showGlobalToast(message || 'Server error. Please try again later.')
+        showGlobalToast(message || t('toast.serverError'))
         break
       default:
         if (status >= 500) {
-          showGlobalToast('Server error. Please try again later.')
+          showGlobalToast(t('toast.serverError'))
         }
     }
 
