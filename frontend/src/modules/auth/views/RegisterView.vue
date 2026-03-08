@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import PasswordInput from '@/modules/auth/components/PasswordInput.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -35,7 +37,7 @@ const handleRegister = async () => {
       errors.value = err.response.data.errors
     } else {
       console.error('Registration failed:', err)
-      errors.value.general = ['Something went wrong. Please try again.']
+      errors.value.general = [t('auth.somethingWrong')]
     }
   } finally {
     loading.value = false
@@ -61,8 +63,8 @@ const handleRegister = async () => {
           </div>
         </div>
 
-        <h1 class="text-2xl font-bold text-center text-white mb-1">Create Account</h1>
-        <p class="text-sm text-slate-500 text-center mb-8">Start building your professional CV today</p>
+        <h1 class="text-2xl font-bold text-center text-white mb-1">{{ t('auth.createAccount') }}</h1>
+        <p class="text-sm text-slate-500 text-center mb-8">{{ t('auth.registerSubtitle') }}</p>
 
         <p v-if="errors.general"
           class="text-red-400 text-sm text-center mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
@@ -71,19 +73,19 @@ const handleRegister = async () => {
 
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div>
-            <label for="name" class="label-dark">Full Name</label>
-            <input type="text" v-model="formData.name" id="name" required placeholder="John Doe" class="input-dark" />
+            <label for="name" class="label-dark">{{ t('auth.fullNameLabel') }}</label>
+            <input type="text" v-model="formData.name" id="name" required :placeholder="t('auth.fullNamePlaceholder')" class="input-dark" />
             <p v-if="errors.name" class="text-red-400 text-xs mt-1.5">{{ errors.name[0] }}</p>
           </div>
 
           <div>
-            <label for="email" class="label-dark">Email Address</label>
-            <input type="email" v-model="formData.email" id="email" required placeholder="you@example.com" class="input-dark" />
+            <label for="email" class="label-dark">{{ t('auth.emailLabel') }}</label>
+            <input type="email" v-model="formData.email" id="email" required :placeholder="t('auth.emailPlaceholder')" class="input-dark" />
             <p v-if="errors.email" class="text-red-400 text-xs mt-1.5">{{ errors.email[0] }}</p>
           </div>
 
           <div>
-            <label for="password" class="label-dark">Password</label>
+            <label for="password" class="label-dark">{{ t('auth.passwordLabel') }}</label>
             <PasswordInput
               v-model="formData.password"
               :error="errors.password?.[0] ?? ''"
@@ -91,7 +93,7 @@ const handleRegister = async () => {
           </div>
 
           <div>
-            <label for="password_confirmation" class="label-dark">Confirm Password</label>
+            <label for="password_confirmation" class="label-dark">{{ t('auth.confirmPasswordLabel') }}</label>
             <input type="password" v-model="formData.password_confirmation" id="password_confirmation"
               required placeholder="••••••••" class="input-dark" />
             <p v-if="errors.password_confirmation" class="text-red-400 text-xs mt-1.5">{{ errors.password_confirmation[0] }}</p>
@@ -99,13 +101,13 @@ const handleRegister = async () => {
 
           <button type="submit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2 mt-2">
             <LoadingSpinner v-if="loading" />
-            {{ loading ? 'Creating account...' : 'Create Account' }}
+            {{ loading ? t('auth.creatingAccount') : t('auth.createAccountBtn') }}
           </button>
         </form>
 
         <p class="text-center text-sm text-slate-500 mt-6">
-          Already have an account?
-          <router-link to="/login" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">Sign in</router-link>
+          {{ t('auth.haveAccount') }}
+          <router-link to="/login" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">{{ t('auth.signInBtn') }}</router-link>
         </p>
       </div>
     </div>
