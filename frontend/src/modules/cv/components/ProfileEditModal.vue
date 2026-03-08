@@ -97,6 +97,46 @@ const emit = defineEmits([
         <input v-model="profileForm.location" class="input-dark" :placeholder="t('forms.locationPlaceholder')" />
         <p v-if="profileErrors.location" class="text-red-400 text-xs mt-1">{{ profileErrors.location[0] }}</p>
       </div>
+
+      <!-- Contact Info Separator -->
+      <div class="pt-2 pb-1">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-sm">📱</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">{{ t('print.contact') }}</span>
+        </div>
+        <div class="h-px bg-linear-to-r from-blue-500/20 to-transparent"></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="label-dark">{{ t('forms.phone') }}</label>
+          <input v-model="profileForm.phone" class="input-dark" :placeholder="t('forms.phonePlaceholder')" />
+          <p v-if="profileErrors.phone" class="text-red-400 text-xs mt-1">{{ profileErrors.phone[0] }}</p>
+        </div>
+        <div>
+          <label class="label-dark">{{ t('forms.contactEmail') }}</label>
+          <input type="email" v-model="profileForm.contact_email" class="input-dark" :placeholder="t('forms.contactEmailPlaceholder')" />
+          <p v-if="profileErrors.contact_email" class="text-red-400 text-xs mt-1">{{ profileErrors.contact_email[0] }}</p>
+        </div>
+      </div>
+      <div>
+        <label class="label-dark">{{ t('forms.website') }}</label>
+        <input type="url" v-model="profileForm.website" class="input-dark" :placeholder="t('forms.websitePlaceholder')" />
+        <p v-if="profileErrors.website" class="text-red-400 text-xs mt-1">{{ profileErrors.website[0] }}</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="label-dark">{{ t('forms.linkedinUrl') }}</label>
+          <input type="url" v-model="profileForm.linkedin" class="input-dark" :placeholder="t('forms.linkedinPlaceholder')" />
+          <p v-if="profileErrors.linkedin" class="text-red-400 text-xs mt-1">{{ profileErrors.linkedin[0] }}</p>
+        </div>
+        <div>
+          <label class="label-dark">{{ t('forms.githubProfileUrl') }}</label>
+          <input type="url" v-model="profileForm.github" class="input-dark" :placeholder="t('forms.githubProfilePlaceholder')" />
+          <p v-if="profileErrors.github" class="text-red-400 text-xs mt-1">{{ profileErrors.github[0] }}</p>
+        </div>
+      </div>
+
       <button type="submit" :disabled="profileLoading" class="btn-primary w-full flex items-center justify-center gap-2">
         <LoadingSpinner v-if="profileLoading" /> {{ profileLoading ? t('forms.saving') : t('forms.updateProfile') }}
       </button>
