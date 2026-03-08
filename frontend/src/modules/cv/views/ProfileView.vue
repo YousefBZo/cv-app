@@ -26,6 +26,11 @@ const formData = ref({
   headline: '',
   summary: '',
   location: '',
+  phone: '',
+  contact_email: '',
+  website: '',
+  linkedin: '',
+  github: '',
 })
 const photo = ref(null)
 const photoPreview = ref(null)
@@ -61,6 +66,11 @@ onMounted(async () => {
       formData.value.headline = profile.headline || ''
       formData.value.summary = profile.summary || ''
       formData.value.location = profile.location || ''
+      formData.value.phone = profile.phone || ''
+      formData.value.contact_email = profile.contact_email || ''
+      formData.value.website = profile.website || ''
+      formData.value.linkedin = profile.linkedin || ''
+      formData.value.github = profile.github || ''
       if (profile.photo) {
         photoPreview.value = profile.photo
       }
@@ -95,6 +105,11 @@ const handleSubmit = () => {
   data.append('headline', formData.value.headline)
   data.append('summary', formData.value.summary)
   data.append('location', formData.value.location)
+  data.append('phone', formData.value.phone || '')
+  data.append('contact_email', formData.value.contact_email || '')
+  data.append('website', formData.value.website || '')
+  data.append('linkedin', formData.value.linkedin || '')
+  data.append('github', formData.value.github || '')
   if (photo.value) {
     data.append('photo', photo.value)
   }
@@ -239,6 +254,47 @@ const handleDeleteAccount = async () => {
             <label for="location" class="label-dark">{{ t('forms.location') }} <span class="text-red-400">*</span></label>
             <input type="text" id="location" v-model="formData.location" :placeholder="t('forms.locationPlaceholder')" class="input-dark" />
             <p v-if="errors.location" class="text-red-400 text-xs mt-1.5">{{ errors.location[0] }}</p>
+          </div>
+
+          <!-- Contact Info Section -->
+          <div class="pt-3 pb-1">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-base">📱</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">{{ t('print.contact') }}</span>
+            </div>
+            <div class="h-px bg-linear-to-r from-blue-500/30 to-transparent"></div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="phone" class="label-dark">{{ t('forms.phone') }}</label>
+              <input type="tel" id="phone" v-model="formData.phone" :placeholder="t('forms.phonePlaceholder')" class="input-dark" />
+              <p v-if="errors.phone" class="text-red-400 text-xs mt-1.5">{{ errors.phone[0] }}</p>
+            </div>
+            <div>
+              <label for="contact_email" class="label-dark">{{ t('forms.contactEmail') }}</label>
+              <input type="email" id="contact_email" v-model="formData.contact_email" :placeholder="t('forms.contactEmailPlaceholder')" class="input-dark" />
+              <p v-if="errors.contact_email" class="text-red-400 text-xs mt-1.5">{{ errors.contact_email[0] }}</p>
+            </div>
+          </div>
+
+          <div>
+            <label for="website" class="label-dark">{{ t('forms.website') }}</label>
+            <input type="url" id="website" v-model="formData.website" :placeholder="t('forms.websitePlaceholder')" class="input-dark" />
+            <p v-if="errors.website" class="text-red-400 text-xs mt-1.5">{{ errors.website[0] }}</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="linkedin" class="label-dark">{{ t('forms.linkedinUrl') }}</label>
+              <input type="url" id="linkedin" v-model="formData.linkedin" :placeholder="t('forms.linkedinPlaceholder')" class="input-dark" />
+              <p v-if="errors.linkedin" class="text-red-400 text-xs mt-1.5">{{ errors.linkedin[0] }}</p>
+            </div>
+            <div>
+              <label for="github" class="label-dark">{{ t('forms.githubProfileUrl') }}</label>
+              <input type="url" id="github" v-model="formData.github" :placeholder="t('forms.githubProfilePlaceholder')" class="input-dark" />
+              <p v-if="errors.github" class="text-red-400 text-xs mt-1.5">{{ errors.github[0] }}</p>
+            </div>
           </div>
 
           <button type="submit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">

@@ -47,6 +47,11 @@ export const useCVStore = defineStore('cv', () => {
   const headline = computed(() => profile.value?.headline ?? '')
   const summary = computed(() => profile.value?.summary ?? '')
   const location = computed(() => profile.value?.location ?? '')
+  const phone = computed(() => profile.value?.phone ?? '')
+  const contactEmail = computed(() => profile.value?.contact_email ?? '')
+  const website = computed(() => profile.value?.website ?? '')
+  const linkedin = computed(() => profile.value?.linkedin ?? '')
+  const github = computed(() => profile.value?.github ?? '')
   const educations = computed(() => profile.value?.educations ?? [])
   const experiences = computed(() => profile.value?.experiences ?? [])
   const volunteerExperiences = computed(() => profile.value?.volunteer_experiences ?? [])
@@ -193,6 +198,11 @@ export const useCVStore = defineStore('cv', () => {
     headline,
     summary,
     location,
+    phone,
+    contactEmail,
+    website,
+    linkedin,
+    github,
     educations,
     experiences,
     volunteerExperiences,

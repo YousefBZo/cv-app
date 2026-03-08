@@ -15,6 +15,11 @@ class Profile extends Model
         'headline',
         'summary',
         'location',
+        'phone',
+        'contact_email',
+        'website',
+        'linkedin',
+        'github',
     ];
 
     protected function casts(): array
