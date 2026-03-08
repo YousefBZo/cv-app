@@ -29,6 +29,28 @@ export function validateProfile(form) {
   if (!form.location || form.location.trim().length < 2) e.location = [t('validation.locationRequired')]
   else if (form.location.trim().length > 255) e.location = [t('validation.locationMax')]
 
+  // Optional contact fields
+  if (form.phone && form.phone.trim().length > 30) e.phone = [t('validation.phoneMax')]
+
+  if (form.contact_email && form.contact_email.trim()) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact_email.trim())) e.contact_email = [t('validation.contactEmailInvalid')]
+    else if (form.contact_email.trim().length > 255) e.contact_email = [t('validation.contactEmailMax')]
+  }
+
+  const urlRegex = /^https?:\/\/.+/
+  if (form.website && form.website.trim()) {
+    if (!urlRegex.test(form.website.trim())) e.website = [t('validation.websiteInvalid')]
+    else if (form.website.trim().length > 500) e.website = [t('validation.websiteMax')]
+  }
+  if (form.linkedin && form.linkedin.trim()) {
+    if (!urlRegex.test(form.linkedin.trim())) e.linkedin = [t('validation.linkedinInvalid')]
+    else if (form.linkedin.trim().length > 500) e.linkedin = [t('validation.linkedinMax')]
+  }
+  if (form.github && form.github.trim()) {
+    if (!urlRegex.test(form.github.trim())) e.github = [t('validation.githubProfileInvalid')]
+    else if (form.github.trim().length > 500) e.github = [t('validation.githubProfileMax')]
+  }
+
   return e
 }
 

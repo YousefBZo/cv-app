@@ -20,6 +20,11 @@ class ProfileResource extends JsonResource
             'headline'   => $this->headline,
             'summary'    => $this->summary,
             'location'   => $this->location,
+            'phone'      => $this->phone,
+            'contact_email' => $this->contact_email,
+            'website'    => $this->website,
+            'linkedin'   => $this->linkedin,
+            'github'     => $this->github,
 
             // Nested relationships (only included when loaded)
             'educations'            => EducationResource::collection($this->whenLoaded('educations')),

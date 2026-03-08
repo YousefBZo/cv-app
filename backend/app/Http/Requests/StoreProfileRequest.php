@@ -14,25 +14,34 @@ class StoreProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo'    => ['bail', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-            'headline' => ['bail', 'required', 'string', 'min:2', 'max:255'],
-            'summary'  => ['bail', 'required', 'string', 'min:10', 'max:2000'],
-            'location' => ['bail', 'required', 'string', 'min:2', 'max:255'],
+            'photo'         => ['bail', 'nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'headline'      => ['bail', 'required', 'string', 'min:2', 'max:255'],
+            'summary'       => ['bail', 'required', 'string', 'min:10', 'max:2000'],
+            'location'      => ['bail', 'required', 'string', 'min:2', 'max:255'],
+            'phone'         => ['bail', 'nullable', 'string', 'max:30'],
+            'contact_email' => ['bail', 'nullable', 'email', 'max:255'],
+            'website'       => ['bail', 'nullable', 'url', 'max:500'],
+            'linkedin'      => ['bail', 'nullable', 'url', 'max:500'],
+            'github'        => ['bail', 'nullable', 'url', 'max:500'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'headline.required' => 'A headline is required (e.g. "Full Stack Developer").',
-            'headline.min'      => 'Headline must be at least 2 characters.',
-            'summary.required'  => 'Please write a brief summary about yourself.',
-            'summary.min'       => 'Summary must be at least 10 characters.',
-            'location.required' => 'Please provide your location.',
-            'location.min'      => 'Location must be at least 2 characters.',
-            'photo.image'       => 'The file must be an image.',
-            'photo.mimes'       => 'Only JPG, PNG and WebP images are allowed.',
-            'photo.max'         => 'Photo must be smaller than 2MB.',
+            'headline.required'   => 'A headline is required (e.g. "Full Stack Developer").',
+            'headline.min'        => 'Headline must be at least 2 characters.',
+            'summary.required'    => 'Please write a brief summary about yourself.',
+            'summary.min'         => 'Summary must be at least 10 characters.',
+            'location.required'   => 'Please provide your location.',
+            'location.min'        => 'Location must be at least 2 characters.',
+            'photo.image'         => 'The file must be an image.',
+            'photo.mimes'         => 'Only JPG, PNG and WebP images are allowed.',
+            'photo.max'           => 'Photo must be smaller than 2MB.',
+            'contact_email.email' => 'Please enter a valid email address.',
+            'website.url'         => 'Website must be a valid URL.',
+            'linkedin.url'        => 'LinkedIn must be a valid URL.',
+            'github.url'          => 'GitHub must be a valid URL.',
         ];
     }
 }

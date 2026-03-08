@@ -21,7 +21,7 @@ export function useProfileModal() {
   const tab = ref('profile') // 'profile' | 'account' | 'password'
 
   // ── Profile tab ─────────────────────────────────────────────
-  const profileForm = reactive({ headline: '', summary: '', location: '' })
+  const profileForm = reactive({ headline: '', summary: '', location: '', phone: '', contact_email: '', website: '', linkedin: '', github: '' })
   const profilePhoto = ref(null)
   const profilePhotoPreview = ref(null)
   const profileLoading = ref(false)
@@ -49,6 +49,11 @@ export function useProfileModal() {
     profileForm.headline = cvStore.headline
     profileForm.summary = cvStore.summary
     profileForm.location = cvStore.location
+    profileForm.phone = cvStore.phone
+    profileForm.contact_email = cvStore.contactEmail
+    profileForm.website = cvStore.website
+    profileForm.linkedin = cvStore.linkedin
+    profileForm.github = cvStore.github
     profilePhoto.value = null
     profilePhotoPreview.value = cvStore.profilePhoto
     userNameForm.name = authStore.userName
@@ -82,6 +87,11 @@ export function useProfileModal() {
       data.append('headline', profileForm.headline)
       data.append('summary', profileForm.summary)
       data.append('location', profileForm.location)
+      data.append('phone', profileForm.phone || '')
+      data.append('contact_email', profileForm.contact_email || '')
+      data.append('website', profileForm.website || '')
+      data.append('linkedin', profileForm.linkedin || '')
+      data.append('github', profileForm.github || '')
       if (profilePhoto.value) data.append('photo', profilePhoto.value)
       data.append('_method', 'PUT')
       await cvStore.updateItem('profile', '', data, true)
