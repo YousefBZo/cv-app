@@ -21,6 +21,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Arabic font — applied when dir="rtl" is on <html> */
+[dir="rtl"] body {
+  font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 /* Glassmorphism card base */
 .glass-card {
   background: var(--bg-card);
@@ -113,4 +118,16 @@ select.input-dark option:checked {
   height: 1px;
   flex: 1;
   background: linear-gradient(to right, rgba(59, 130, 246, 0.5), transparent);
+}
+
+/* RTL support: flip gradients and positioning */
+[dir="rtl"] .section-line {
+  background: linear-gradient(to left, rgba(59, 130, 246, 0.5), transparent);
+}
+
+/* RTL: select dropdown arrow flips to left */
+[dir="rtl"] select.input-dark {
+  background-position: left 0.75rem center;
+  padding-left: 2.5rem;
+  padding-right: 0.875rem;
 }
