@@ -110,14 +110,56 @@ const dateBadgeStyle = {
         <!-- Sidebar Sections -->
         <div style="padding:24px 22px;flex:1;display:flex;flex-direction:column;gap:22px;">
 
-          <!-- Location -->
-          <div v-if="cvStore.location">
+          <!-- Contact Info -->
+          <div v-if="cvStore.location || cvStore.phone || cvStore.contactEmail || cvStore.website || cvStore.linkedin || cvStore.github">
             <div :style="sidebarHeadingStyle">{{ t('print.contact') }}</div>
-            <div style="display:flex;align-items:center;gap:7px;">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;">
+
+            <!-- Location -->
+            <div v-if="cvStore.location" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <span style="font-size:10px;">📍</span>
               </div>
               <span style="font-size:10px;color:#cbd5e1;">{{ cvStore.location }}</span>
+            </div>
+
+            <!-- Phone -->
+            <div v-if="cvStore.phone" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10px;">📞</span>
+              </div>
+              <span style="font-size:10px;color:#cbd5e1;">{{ cvStore.phone }}</span>
+            </div>
+
+            <!-- Email -->
+            <div v-if="cvStore.contactEmail" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10px;">✉️</span>
+              </div>
+              <span style="font-size:9px;color:#cbd5e1;word-break:break-all;">{{ cvStore.contactEmail }}</span>
+            </div>
+
+            <!-- Website -->
+            <div v-if="cvStore.website" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10px;">🌐</span>
+              </div>
+              <span style="font-size:9px;color:#60a5fa;word-break:break-all;">{{ cvStore.website.replace(/^https?:\/\//, '') }}</span>
+            </div>
+
+            <!-- LinkedIn -->
+            <div v-if="cvStore.linkedin" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10px;">💼</span>
+              </div>
+              <span style="font-size:9px;color:#60a5fa;word-break:break-all;">{{ cvStore.linkedin.replace(/^https?:\/\/(www\.)?/, '') }}</span>
+            </div>
+
+            <!-- GitHub -->
+            <div v-if="cvStore.github" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(96,165,250,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10px;">🐙</span>
+              </div>
+              <span style="font-size:9px;color:#60a5fa;word-break:break-all;">{{ cvStore.github.replace(/^https?:\/\/(www\.)?/, '') }}</span>
             </div>
           </div>
 

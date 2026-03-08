@@ -39,6 +39,31 @@ const { t } = useI18n()
         <span>📍 {{ cvStore.location }}</span>
         <span class="w-8 h-px bg-blue-500/50"></span>
       </div>
+
+      <!-- Contact Info Pills -->
+      <div v-if="cvStore.phone || cvStore.contactEmail || cvStore.website || cvStore.linkedin || cvStore.github"
+        class="flex flex-wrap items-center justify-center gap-2 pt-5" @click.stop>
+        <a v-if="cvStore.phone" :href="'tel:' + cvStore.phone"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
+          <span>📞</span> {{ cvStore.phone }}
+        </a>
+        <a v-if="cvStore.contactEmail" :href="'mailto:' + cvStore.contactEmail"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
+          <span>✉️</span> {{ cvStore.contactEmail }}
+        </a>
+        <a v-if="cvStore.website" :href="cvStore.website" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-cyan-400/30 hover:text-cyan-400 transition-all">
+          <span>🌐</span> {{ t('forms.website') }}
+        </a>
+        <a v-if="cvStore.linkedin" :href="cvStore.linkedin" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-500/30 hover:text-blue-500 transition-all">
+          <span>💼</span> LinkedIn
+        </a>
+        <a v-if="cvStore.github" :href="cvStore.github" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-purple-400/30 hover:text-purple-400 transition-all">
+          <span>🐙</span> GitHub
+        </a>
+      </div>
     </div>
   </section>
 </template>
