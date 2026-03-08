@@ -5,6 +5,7 @@
  * All section UI lives in dedicated Section components.
  */
 import { onMounted, watch, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useCVStore } from '@/modules/cv/stores/cv'
 import { usePagination } from '@/modules/cv/composables/usePagination'
 import { useEditModal } from '@/modules/cv/composables/useEditModal'
@@ -25,6 +26,7 @@ import EditItemModal from '@/modules/cv/components/EditItemModal.vue'
 import ProfileEditModal from '@/modules/cv/components/ProfileEditModal.vue'
 
 const cvStore = useCVStore()
+const { t } = useI18n()
 const isVisible = ref(false)
 
 onMounted(() => {
@@ -47,15 +49,15 @@ const { generating, downloadCV } = useDownloadCV()
 
 function onEditItem(section, item) {
   const titles = {
-    project: 'Edit Project',
-    experience: 'Edit Experience',
-    skill: 'Skill: ' + item.name,
-    education: 'Edit Education',
-    volunteer: 'Edit Volunteer Experience',
-    certification: 'Edit Certification',
-    language: 'Language: ' + item.name,
+    project: t('forms.saveChanges'),
+    experience: t('forms.saveChanges'),
+    skill: t('sidebar.skills') + ': ' + item.name,
+    education: t('forms.saveChanges'),
+    volunteer: t('forms.saveChanges'),
+    certification: t('forms.saveChanges'),
+    language: t('sidebar.languages') + ': ' + item.name,
   }
-  editModal.open(section, item, titles[section] || 'Edit')
+  editModal.open(section, item, titles[section] || t('forms.saveChanges'))
 }
 </script>
 
@@ -68,11 +70,11 @@ function onEditItem(section, item) {
     <div v-else-if="!cvStore.hasProfile" class="flex items-center justify-center min-h-[60vh]">
       <div class="text-center space-y-6 max-w-md mx-auto px-6">
         <div class="text-6xl">&#x1F464;</div>
-        <h2 class="text-2xl font-bold text-white">No Profile Yet</h2>
-        <p class="text-slate-400">You haven't created your profile yet. Create one to start building your CV!</p>
+        <h2 class="text-2xl font-bold text-white">{{ t('cv.noProfileTitle') }}</h2>
+        <p class="text-slate-400">{{ t('cv.noProfileText') }}</p>
         <router-link to="/profile"
           class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
-          Create Profile →
+          {{ t('cv.createProfileLink') }}
         </router-link>
       </div>
     </div>
@@ -98,7 +100,7 @@ function onEditItem(section, item) {
           <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
           </svg>
-          <span class="hidden sm:inline">{{ generating ? 'Generating...' : 'Download CV' }}</span>
+          <span class="hidden sm:inline">{{ generating ? t('cv.generating') : t('cv.downloadCV') }}</span>
         </button>
       </div>
 

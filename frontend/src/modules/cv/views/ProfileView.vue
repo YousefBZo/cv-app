@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import http from '@/api/http'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import { useFormSubmit } from '@/modules/cv/composables/useFormSubmit'
@@ -11,6 +12,7 @@ import SectionHeader from '@/modules/cv/components/SectionHeader.vue'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const toast = useToastStore()
 const authStore = useAuthStore()
@@ -30,7 +32,7 @@ const photoPreview = ref(null)
 
 const { errors, loading, submit } = useFormSubmit('/profile', {
   onSuccess: () => {
-    toast.showSuccess(isEditMode.value ? 'Profile updated!' : 'Profile created!')
+    toast.showSuccess(isEditMode.value ? t('toast.profileUpdated') : t('toast.profileCreated'))
     router.push({ name: 'CV' })
   },
 })
@@ -106,18 +108,18 @@ const handleSubmit = () => {
 const handleUserNameSave = async () => {
   userNameErrors.value = {}
   if (!userName.value || userName.value.trim().length < 2) {
-    userNameErrors.value = { name: ['Name must be at least 2 characters.'] }
+    userNameErrors.value = { name: [t('validation.nameMin')] }
     return
   }
   userNameLoading.value = true
   try {
     await authStore.updateUserName(userName.value.trim())
-    toast.showSuccess('Name updated successfully!')
+    toast.showSuccess(t('toast.nameUpdated'))
   } catch (err) {
     if (err.response?.status === 422) {
       userNameErrors.value = err.response.data.errors || {}
     } else {
-      userNameErrors.value = { name: [err.response?.data?.message || 'Failed to update name.'] }
+      userNameErrors.value = { name: [err.response?.data?.message || t('validation.genericError')] }
     }
   } finally {
     userNameLoading.value = false
@@ -128,9 +130,9 @@ const handleUserNameSave = async () => {
 const handlePasswordSave = async () => {
   passwordErrors.value = {}
   const v = {}
-  if (!passwordForm.value.current_password) v.current_password = ['Current password is required.']
-  if (!passwordForm.value.password || passwordForm.value.password.length < 8) v.password = ['New password must be at least 8 characters.']
-  else if (passwordForm.value.password !== passwordForm.value.password_confirmation) v.password_confirmation = ['Passwords do not match.']
+  if (!passwordForm.value.current_password) v.current_password = [t('validation.currentPasswordRequired')]
+  if (!passwordForm.value.password || passwordForm.value.password.length < 8) v.password = [t('validation.passwordMin')]
+  else if (passwordForm.value.password !== passwordForm.value.password_confirmation) v.password_confirmation = [t('validation.passwordMismatch')]
   if (Object.keys(v).length > 0) { passwordErrors.value = v; return }
 
   passwordLoading.value = true
@@ -140,7 +142,7 @@ const handlePasswordSave = async () => {
       passwordForm.value.password,
       passwordForm.value.password_confirmation
     )
-    toast.showSuccess('Password updated successfully!')
+    toast.showSuccess(t('toast.passwordUpdated'))
     passwordForm.value.current_password = ''
     passwordForm.value.password = ''
     passwordForm.value.password_confirmation = ''
@@ -148,7 +150,7 @@ const handlePasswordSave = async () => {
     if (err.response?.status === 422) {
       passwordErrors.value = err.response.data.errors || {}
     } else {
-      passwordErrors.value = { current_password: [err.response?.data?.message || 'Failed to update password.'] }
+      passwordErrors.value = { current_password: [err.response?.data?.message || t('validation.genericError')] }
     }
   } finally {
     passwordLoading.value = false
@@ -157,16 +159,16 @@ const handlePasswordSave = async () => {
 
 // ── Delete account ──
 const handleDeleteAccount = async () => {
-  if (!confirm('⚠️ Are you sure you want to delete your ENTIRE account? This cannot be undone!')) return
-  if (!confirm('This will delete your profile, all CV data, and your account. Continue?')) return
+  if (!confirm(t('forms.deleteConfirm1'))) return
+  if (!confirm(t('forms.deleteConfirm2'))) return
   try {
     await http.delete('/profile')
-    toast.showSuccess('Account deleted successfully.')
+    toast.showSuccess(t('toast.accountDeleted'))
     localStorage.removeItem('auth_token')
     router.push({ name: 'Login' })
     setTimeout(() => window.location.reload(), 100)
   } catch (err) {
-    toast.showError('Failed to delete account.')
+    toast.showError(t('toast.deleteFailed'))
   }
 }
 </script>
@@ -180,8 +182,8 @@ const handleDeleteAccount = async () => {
 
     <template v-else>
       <SectionHeader :icon="isEditMode ? '✏️' : '👤'"
-        :title="isEditMode ? 'Edit Profile' : 'Create Profile'"
-        :subtitle="isEditMode ? 'Manage your profile, account & password' : 'Set up your personal info & headline'"
+        :title="isEditMode ? t('forms.editProfile') : t('forms.createProfile')"
+        :subtitle="isEditMode ? t('forms.editProfileSubtitle') : t('forms.createProfileSubtitle')"
         gradient="from-blue-500 to-cyan-500" />
 
       <!-- ── Tab Navigation (only in edit mode) ── -->
@@ -189,17 +191,17 @@ const handleDeleteAccount = async () => {
         <button @click="activeTab = 'profile'"
           :class="activeTab === 'profile' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
           class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          <span class="hidden sm:inline">👤 </span>Profile
+          <span class="hidden sm:inline">👤 </span>{{ t('forms.profileTab') }}
         </button>
         <button @click="activeTab = 'account'"
           :class="activeTab === 'account' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
           class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          <span class="hidden sm:inline">⚙️ </span>Account
+          <span class="hidden sm:inline">⚙️ </span>{{ t('forms.accountTab') }}
         </button>
         <button @click="activeTab = 'password'"
           :class="activeTab === 'password' ? 'bg-blue-500/20 text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'"
           class="flex-1 py-2.5 px-2 sm:px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
-          <span class="hidden sm:inline">🔒 </span>Password
+          <span class="hidden sm:inline">🔒 </span>{{ t('forms.passwordTab') }}
         </button>
       </div>
 
@@ -210,7 +212,7 @@ const handleDeleteAccount = async () => {
         <form @submit.prevent="handleSubmit" class="space-y-5">
           <!-- Photo -->
           <div>
-            <label class="label-dark">Profile Photo</label>
+            <label class="label-dark">{{ t('forms.profilePhoto') }}</label>
             <div class="flex items-center gap-4">
               <div class="w-16 h-16 rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center shrink-0">
                 <img v-if="photoPreview" :src="photoPreview" alt="Profile photo preview" class="w-full h-full object-cover" />
@@ -222,26 +224,26 @@ const handleDeleteAccount = async () => {
           </div>
 
           <div>
-            <label for="headline" class="label-dark">Headline <span class="text-red-400">*</span></label>
-            <input type="text" id="headline" v-model="formData.headline" placeholder="e.g. Full Stack Developer" class="input-dark" />
+            <label for="headline" class="label-dark">{{ t('forms.headline') }} <span class="text-red-400">*</span></label>
+            <input type="text" id="headline" v-model="formData.headline" :placeholder="t('forms.headlinePlaceholder')" class="input-dark" />
             <p v-if="errors.headline" class="text-red-400 text-xs mt-1.5">{{ errors.headline[0] }}</p>
           </div>
 
           <div>
-            <label for="summary" class="label-dark">Summary <span class="text-red-400">*</span></label>
-            <textarea id="summary" v-model="formData.summary" rows="4" placeholder="Write a brief summary about yourself..." class="input-dark resize-none"></textarea>
+            <label for="summary" class="label-dark">{{ t('forms.summary') }} <span class="text-red-400">*</span></label>
+            <textarea id="summary" v-model="formData.summary" rows="4" :placeholder="t('forms.summaryPlaceholder')" class="input-dark resize-none"></textarea>
             <p v-if="errors.summary" class="text-red-400 text-xs mt-1.5">{{ errors.summary[0] }}</p>
           </div>
 
           <div>
-            <label for="location" class="label-dark">Location <span class="text-red-400">*</span></label>
-            <input type="text" id="location" v-model="formData.location" placeholder="e.g. New York, USA" class="input-dark" />
+            <label for="location" class="label-dark">{{ t('forms.location') }} <span class="text-red-400">*</span></label>
+            <input type="text" id="location" v-model="formData.location" :placeholder="t('forms.locationPlaceholder')" class="input-dark" />
             <p v-if="errors.location" class="text-red-400 text-xs mt-1.5">{{ errors.location[0] }}</p>
           </div>
 
           <button type="submit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">
             <LoadingSpinner v-if="loading" />
-            {{ loading ? 'Saving...' : (isEditMode ? 'Update Profile' : 'Create Profile') }}
+            {{ loading ? t('forms.saving') : (isEditMode ? t('forms.updateProfile') : t('forms.createProfile')) }}
           </button>
         </form>
       </div>
@@ -249,25 +251,25 @@ const handleDeleteAccount = async () => {
       <!-- ═══════ ACCOUNT TAB ═══════ -->
       <div v-else-if="activeTab === 'account'">
         <div class="text-center mb-6">
-          <p class="text-sm text-slate-400">Update your display name. Your email cannot be changed.</p>
+          <p class="text-sm text-slate-400">{{ t('forms.updateNameDesc') }}</p>
         </div>
 
         <form @submit.prevent="handleUserNameSave" class="space-y-5">
           <div>
-            <label class="label-dark">Display Name</label>
-            <input v-model="userName" class="input-dark" placeholder="Your name" />
+            <label class="label-dark">{{ t('forms.displayName') }}</label>
+            <input v-model="userName" class="input-dark" :placeholder="t('forms.displayNamePlaceholder')" />
             <p v-if="userNameErrors.name" class="text-red-400 text-xs mt-1.5">{{ userNameErrors.name[0] }}</p>
           </div>
 
           <div>
-            <label class="label-dark">Email</label>
+            <label class="label-dark">{{ t('forms.email') }}</label>
             <input :value="authStore.user?.email" class="input-dark opacity-50 cursor-not-allowed" disabled />
-            <p class="text-slate-600 text-xs mt-1">Email cannot be changed.</p>
+            <p class="text-slate-600 text-xs mt-1">{{ t('forms.emailCannotChange') }}</p>
           </div>
 
           <button type="submit" :disabled="userNameLoading" class="btn-primary flex items-center justify-center gap-2">
             <LoadingSpinner v-if="userNameLoading" />
-            {{ userNameLoading ? 'Saving...' : 'Update Name' }}
+            {{ userNameLoading ? t('forms.saving') : t('forms.updateName') }}
           </button>
         </form>
       </div>
@@ -275,31 +277,31 @@ const handleDeleteAccount = async () => {
       <!-- ═══════ PASSWORD TAB ═══════ -->
       <div v-else-if="activeTab === 'password'">
         <div class="text-center mb-6">
-          <p class="text-sm text-slate-400">Change your account password.</p>
+          <p class="text-sm text-slate-400">{{ t('forms.changePasswordDesc') }}</p>
         </div>
 
         <form @submit.prevent="handlePasswordSave" class="space-y-5">
           <div>
-            <label class="label-dark">Current Password</label>
-            <input type="password" v-model="passwordForm.current_password" class="input-dark" placeholder="Enter current password" />
+            <label class="label-dark">{{ t('forms.currentPassword') }}</label>
+            <input type="password" v-model="passwordForm.current_password" class="input-dark" :placeholder="t('forms.currentPasswordPlaceholder')" />
             <p v-if="passwordErrors.current_password" class="text-red-400 text-xs mt-1.5">{{ passwordErrors.current_password[0] }}</p>
           </div>
 
           <div>
-            <label class="label-dark">New Password</label>
-            <input type="password" v-model="passwordForm.password" class="input-dark" placeholder="Min 8 characters" />
+            <label class="label-dark">{{ t('forms.newPassword') }}</label>
+            <input type="password" v-model="passwordForm.password" class="input-dark" :placeholder="t('forms.newPasswordPlaceholder')" />
             <p v-if="passwordErrors.password" class="text-red-400 text-xs mt-1.5">{{ passwordErrors.password[0] }}</p>
           </div>
 
           <div>
-            <label class="label-dark">Confirm New Password</label>
-            <input type="password" v-model="passwordForm.password_confirmation" class="input-dark" placeholder="Repeat new password" />
+            <label class="label-dark">{{ t('forms.confirmNewPassword') }}</label>
+            <input type="password" v-model="passwordForm.password_confirmation" class="input-dark" :placeholder="t('forms.confirmNewPasswordPlaceholder')" />
             <p v-if="passwordErrors.password_confirmation" class="text-red-400 text-xs mt-1.5">{{ passwordErrors.password_confirmation[0] }}</p>
           </div>
 
           <button type="submit" :disabled="passwordLoading" class="btn-primary flex items-center justify-center gap-2">
             <LoadingSpinner v-if="passwordLoading" />
-            {{ passwordLoading ? 'Updating...' : 'Change Password' }}
+            {{ passwordLoading ? t('forms.updating') : t('forms.changePassword') }}
           </button>
         </form>
       </div>
@@ -307,10 +309,10 @@ const handleDeleteAccount = async () => {
       <!-- Delete Account (only in edit mode) -->
       <div v-if="isEditMode" class="mt-8 pt-6 border-t border-white/5">
         <div class="text-center">
-          <p class="text-xs text-slate-600 mb-3">Want to delete your entire account and all CV data?</p>
+          <p class="text-xs text-slate-600 mb-3">{{ t('forms.deleteAccountTitle') }}</p>
           <button @click="handleDeleteAccount"
             class="px-6 py-2 rounded-lg text-xs font-semibold text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all">
-            🗑 Delete Account
+            🗑 {{ t('forms.deleteAccountBtn') }}
           </button>
         </div>
       </div>
