@@ -1,7 +1,6 @@
 <script setup>
-/**
- * VolunteerSection — grid of volunteer experience cards.
- */
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   volunteers: { type: Array, default: () => [] },
   hasMore: { type: Boolean, default: false },
@@ -9,12 +8,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Volunteer Experience</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.volunteerTitle') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -29,7 +29,7 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
             </svg>
           </div>
           <div>
-            <div class="text-teal-400 text-xs font-bold mb-1">{{ vol.start_date?.substring(0, 10) }} — {{ vol.end_date?.substring(0, 10) || 'Present' }}</div>
+            <div class="text-teal-400 text-xs font-bold mb-1">{{ vol.start_date?.substring(0, 10) }} — {{ vol.end_date?.substring(0, 10) || t('cv.present') }}</div>
             <h3 class="text-lg sm:text-xl font-bold text-white mb-1">{{ vol.role }}</h3>
             <p class="text-slate-300 font-medium">{{ vol.organization }}</p>
             <p v-if="vol.description" class="text-slate-500 text-sm mt-2 italic">{{ vol.description }}</p>
@@ -39,12 +39,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No volunteer experience added yet. <router-link to="/volunteer" class="text-teal-400 hover:underline">Add one →</router-link>
+      {{ t('cv.noVolunteer') }} <router-link to="/volunteer" class="text-teal-400 hover:underline">{{ t('cv.addVolunteer') }}</router-link>
     </p>
 
     <div class="mt-12 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 transition-all text-xs font-bold uppercase tracking-widest">View More</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-teal-400 transition-all text-xs font-bold uppercase tracking-widest">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.viewMoreVolunteer') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-teal-400 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

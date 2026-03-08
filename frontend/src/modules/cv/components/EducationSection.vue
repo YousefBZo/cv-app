@@ -1,7 +1,6 @@
 <script setup>
-/**
- * EducationSection — grid of education cards.
- */
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   educations: { type: Array, default: () => [] },
   hasMore: { type: Boolean, default: false },
@@ -9,12 +8,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Education</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.educationTitle') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -27,7 +27,7 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
             <svg xmlns="http://www.w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
           </div>
           <div>
-            <div class="text-blue-400 text-xs font-bold mb-1">{{ edu.start_date?.substring(0, 10) }} — {{ edu.end_date?.substring(0, 10) || 'Present' }}</div>
+            <div class="text-blue-400 text-xs font-bold mb-1">{{ edu.start_date?.substring(0, 10) }} — {{ edu.end_date?.substring(0, 10) || t('cv.present') }}</div>
             <h3 class="text-lg sm:text-xl font-bold text-white mb-1">{{ edu.degree }}</h3>
             <p class="text-slate-300 font-medium">{{ edu.institution }}</p>
             <p v-if="edu.field_of_study" class="text-slate-500 text-sm mt-2 italic">{{ edu.field_of_study }}</p>
@@ -37,12 +37,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No education added yet. <router-link to="/education" class="text-blue-400 hover:underline">Add one →</router-link>
+      {{ t('cv.noEducation') }} <router-link to="/education" class="text-blue-400 hover:underline">{{ t('cv.addEducation') }}</router-link>
     </p>
 
     <div class="mt-12 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-blue-400 transition-all text-xs font-bold uppercase tracking-widest">View More Education</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-blue-400 transition-all text-xs font-bold uppercase tracking-widest">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-blue-400 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.viewMoreEducation') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-blue-400 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useFormSubmit } from '@/modules/cv/composables/useFormSubmit'
 import { validateProject, hasErrors } from '@/modules/cv/composables/useValidation'
 import { useProfileGuard } from '@/modules/cv/composables/useProfileGuard'
@@ -9,6 +10,7 @@ import SectionHeader from '@/modules/cv/components/SectionHeader.vue'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const { hasProfile, profileLoading } = useProfileGuard()
 
@@ -59,29 +61,29 @@ const handleSubmit = () => {
 
     <div v-else-if="hasProfile === false" class="text-center py-12 space-y-4">
       <div class="text-5xl">⚠️</div>
-      <h2 class="text-xl font-bold text-white">Profile Required</h2>
-      <p class="text-slate-400 text-sm">You need to create your profile before adding projects.</p>
+      <h2 class="text-xl font-bold text-white">{{ t('forms.profileRequired') }}</h2>
+      <p class="text-slate-400 text-sm">{{ t('forms.profileRequiredText', { section: t('sidebar.projects').toLowerCase() }) }}</p>
       <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
-        Create Profile →
+        {{ t('forms.createProfileLink') }}
       </router-link>
     </div>
 
     <template v-else>
-    <SectionHeader icon="🚀" title="Add Project" subtitle="Showcase your portfolio work"
+    <SectionHeader icon="🚀" :title="t('forms.addProject')" :subtitle="t('forms.projectSubtitle')"
       gradient="from-pink-500 to-purple-500" />
 
     <ErrorAlert :error="errors.general?.[0] ?? ''" />
 
     <form @submit.prevent="handleSubmit" class="space-y-5">
       <div>
-        <label for="title" class="label-dark">Title</label>
-        <input type="text" id="title" v-model="formData.title" placeholder="e.g. E-commerce Platform" class="input-dark" />
+        <label for="title" class="label-dark">{{ t('forms.title') }}</label>
+        <input type="text" id="title" v-model="formData.title" :placeholder="t('forms.titlePlaceholder')" class="input-dark" />
         <p v-if="errors.title" class="text-red-400 text-xs mt-1.5">{{ errors.title[0] }}</p>
       </div>
 
       <!-- Cover Photo with Preview -->
       <div>
-        <label class="label-dark">Cover Photo</label>
+        <label class="label-dark">{{ t('forms.coverPhoto') }}</label>
         <div v-if="coverPreview" class="mb-3 rounded-xl overflow-hidden border border-white/10">
           <img :src="coverPreview" class="w-full h-36 object-cover" />
         </div>
@@ -90,31 +92,31 @@ const handleSubmit = () => {
       </div>
 
       <div>
-        <label for="description" class="label-dark">Description</label>
-        <textarea id="description" v-model="formData.description" rows="3" placeholder="Describe your project..." class="input-dark resize-none"></textarea>
+        <label for="description" class="label-dark">{{ t('forms.description') }}</label>
+        <textarea id="description" v-model="formData.description" rows="3" :placeholder="t('forms.descriptionProjPlaceholder')" class="input-dark resize-none"></textarea>
         <p v-if="errors.description" class="text-red-400 text-xs mt-1.5">{{ errors.description[0] }}</p>
       </div>
 
       <div>
-        <label for="link" class="label-dark">Live Link</label>
-        <input type="url" id="link" v-model="formData.link" placeholder="https://..." class="input-dark" />
+        <label for="link" class="label-dark">{{ t('forms.liveLink') }}</label>
+        <input type="url" id="link" v-model="formData.link" :placeholder="t('forms.liveLinkPlaceholder')" class="input-dark" />
         <p v-if="errors.link" class="text-red-400 text-xs mt-1.5">{{ errors.link[0] }}</p>
       </div>
 
       <div>
-        <label for="github_url" class="label-dark">GitHub URL</label>
-        <input type="url" id="github_url" v-model="formData.github_url" placeholder="https://github.com/..." class="input-dark" />
+        <label for="github_url" class="label-dark">{{ t('forms.githubUrl') }}</label>
+        <input type="url" id="github_url" v-model="formData.github_url" :placeholder="t('forms.githubUrlPlaceholder')" class="input-dark" />
         <p v-if="errors.github_url" class="text-red-400 text-xs mt-1.5">{{ errors.github_url[0] }}</p>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label for="start_date" class="label-dark">Start Date</label>
+          <label for="start_date" class="label-dark">{{ t('forms.startDate') }}</label>
           <input type="date" id="start_date" v-model="formData.start_date" class="input-dark" />
           <p v-if="errors.start_date" class="text-red-400 text-xs mt-1.5">{{ errors.start_date[0] }}</p>
         </div>
         <div>
-          <label for="end_date" class="label-dark">End Date</label>
+          <label for="end_date" class="label-dark">{{ t('forms.endDate') }}</label>
           <input type="date" id="end_date" v-model="formData.end_date" class="input-dark" />
           <p v-if="errors.end_date" class="text-red-400 text-xs mt-1.5">{{ errors.end_date[0] }}</p>
         </div>
@@ -122,7 +124,7 @@ const handleSubmit = () => {
 
       <button type="submit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">
         <LoadingSpinner v-if="loading" />
-        {{ loading ? 'Saving...' : 'Save Project' }}
+        {{ loading ? t('forms.saving') : t('forms.saveProject') }}
       </button>
     </form>
     </template>

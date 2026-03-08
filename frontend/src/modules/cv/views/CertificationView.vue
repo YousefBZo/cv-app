@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useFormSubmit } from '@/modules/cv/composables/useFormSubmit'
 import { validateCertification, hasErrors } from '@/modules/cv/composables/useValidation'
 import { useProfileGuard } from '@/modules/cv/composables/useProfileGuard'
@@ -9,6 +10,7 @@ import SectionHeader from '@/modules/cv/components/SectionHeader.vue'
 import ErrorAlert from '@/shared/components/ErrorAlert.vue'
 import LoadingSpinner from '@/shared/components/LoadingSpinner.vue'
 
+const { t } = useI18n()
 const router = useRouter()
 const { hasProfile, profileLoading } = useProfileGuard()
 
@@ -54,46 +56,46 @@ const handleSubmit = () => {
 
     <div v-else-if="hasProfile === false" class="text-center py-12 space-y-4">
       <div class="text-5xl">⚠️</div>
-      <h2 class="text-xl font-bold text-white">Profile Required</h2>
-      <p class="text-slate-400 text-sm">You need to create your profile before adding certifications.</p>
+      <h2 class="text-xl font-bold text-white">{{ t('forms.profileRequired') }}</h2>
+      <p class="text-slate-400 text-sm">{{ t('forms.profileRequiredText', { section: t('sidebar.certifications').toLowerCase() }) }}</p>
       <router-link to="/profile" class="inline-block px-6 py-2 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-all">
-        Create Profile →
+        {{ t('forms.createProfileLink') }}
       </router-link>
     </div>
 
     <template v-else>
-    <SectionHeader icon="🏅" title="Add Certification" subtitle="Certificates, awards & credentials"
+    <SectionHeader icon="🏅" :title="t('forms.addCertification')" :subtitle="t('forms.certificationSubtitle')"
       gradient="from-yellow-500 to-amber-500" />
 
     <ErrorAlert :error="errors.general?.[0] ?? ''" />
 
     <form @submit.prevent="handleSubmit" class="space-y-5">
       <div>
-        <label class="label-dark">Certificate Photo</label>
+        <label class="label-dark">{{ t('forms.certPhoto') }}</label>
         <input type="file" id="photo" accept="image/*" @change="onFileChange" class="input-dark" />
         <p v-if="errors.photo" class="text-red-400 text-xs mt-1.5">{{ errors.photo[0] }}</p>
       </div>
 
       <div>
-        <label for="name" class="label-dark">Certificate Name</label>
-        <input type="text" id="name" v-model="formData.name" placeholder="e.g. AWS Solutions Architect" class="input-dark" />
+        <label for="name" class="label-dark">{{ t('forms.certName') }}</label>
+        <input type="text" id="name" v-model="formData.name" :placeholder="t('forms.certNamePlaceholder')" class="input-dark" />
         <p v-if="errors.name" class="text-red-400 text-xs mt-1.5">{{ errors.name[0] }}</p>
       </div>
 
       <div>
-        <label for="organization" class="label-dark">Organization</label>
-        <input type="text" id="organization" v-model="formData.organization" placeholder="e.g. Amazon Web Services" class="input-dark" />
+        <label for="organization" class="label-dark">{{ t('forms.organization') }}</label>
+        <input type="text" id="organization" v-model="formData.organization" :placeholder="t('forms.organizationPlaceholder')" class="input-dark" />
         <p v-if="errors.organization" class="text-red-400 text-xs mt-1.5">{{ errors.organization[0] }}</p>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label for="issue_date" class="label-dark">Issue Date</label>
+          <label for="issue_date" class="label-dark">{{ t('forms.issueDate') }}</label>
           <input type="date" id="issue_date" v-model="formData.issue_date" class="input-dark" />
           <p v-if="errors.issue_date" class="text-red-400 text-xs mt-1.5">{{ errors.issue_date[0] }}</p>
         </div>
         <div>
-          <label for="expiration_date" class="label-dark">Expiration Date</label>
+          <label for="expiration_date" class="label-dark">{{ t('forms.expirationDate') }}</label>
           <input type="date" id="expiration_date" v-model="formData.expiration_date" class="input-dark" />
           <p v-if="errors.expiration_date" class="text-red-400 text-xs mt-1.5">{{ errors.expiration_date[0] }}</p>
         </div>
@@ -101,7 +103,7 @@ const handleSubmit = () => {
 
       <button type="submit" :disabled="loading" class="btn-primary flex items-center justify-center gap-2">
         <LoadingSpinner v-if="loading" />
-        {{ loading ? 'Saving...' : 'Save Certification' }}
+        {{ loading ? t('forms.saving') : t('forms.saveCertification') }}
       </button>
     </form>
     </template>

@@ -3,10 +3,17 @@ import { createPinia } from 'pinia'
 import './style.css'
 import App from './App.vue'
 import router from './router'
+import i18n from './i18n'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 
 const app = createApp(App)
 app.use(createPinia())
+app.use(i18n)
+
+// Apply initial direction (RTL/LTR) based on saved locale
+const savedLocale = localStorage.getItem('locale') || 'en'
+document.documentElement.setAttribute('dir', savedLocale === 'ar' ? 'rtl' : 'ltr')
+document.documentElement.setAttribute('lang', savedLocale)
 
 const authStore = useAuthStore()
 

@@ -4,6 +4,7 @@ import { useCVStore } from '@/modules/cv/stores/cv'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import { useToastStore } from '@/shared/stores/toast'
 import { validateProfile, hasErrors } from '@/modules/cv/composables/useValidation'
+import i18n from '@/i18n'
 
 /**
  * Composable — encapsulates all state & logic for the profile / account
@@ -97,18 +98,18 @@ export function useProfileModal() {
   async function saveUserName() {
     userNameErrors.value = {}
     if (!userNameForm.name || userNameForm.name.trim().length < 2) {
-      userNameErrors.value = { name: ['Name must be at least 2 characters.'] }
+      userNameErrors.value = { name: [i18n.global.t('validation.nameMin')] }
       return
     }
     userNameLoading.value = true
     try {
       await authStore.updateUserName(userNameForm.name.trim())
-      toast.showSuccess('Name updated successfully!')
+      toast.showSuccess(i18n.global.t('toast.nameUpdated'))
     } catch (err) {
       if (err.response?.status === 422) {
         userNameErrors.value = err.response.data.errors || {}
       } else {
-        userNameErrors.value = { name: [err.response?.data?.message || 'Failed to update name.'] }
+        userNameErrors.value = { name: [err.response?.data?.message || i18n.global.t('validation.genericError')] }
       }
     } finally {
       userNameLoading.value = false
@@ -118,9 +119,9 @@ export function useProfileModal() {
   async function savePassword() {
     passwordErrors.value = {}
     const v = {}
-    if (!passwordForm.current_password) v.current_password = ['Current password is required.']
-    if (!passwordForm.password || passwordForm.password.length < 8) v.password = ['New password must be at least 8 characters.']
-    else if (passwordForm.password !== passwordForm.password_confirmation) v.password_confirmation = ['Passwords do not match.']
+    if (!passwordForm.current_password) v.current_password = [i18n.global.t('validation.currentPasswordRequired')]
+    if (!passwordForm.password || passwordForm.password.length < 8) v.password = [i18n.global.t('validation.passwordMin')]
+    else if (passwordForm.password !== passwordForm.password_confirmation) v.password_confirmation = [i18n.global.t('validation.passwordMismatch')]
     if (Object.keys(v).length > 0) { passwordErrors.value = v; return }
 
     passwordLoading.value = true
@@ -130,7 +131,7 @@ export function useProfileModal() {
         passwordForm.password,
         passwordForm.password_confirmation,
       )
-      toast.showSuccess('Password updated successfully!')
+      toast.showSuccess(i18n.global.t('toast.passwordUpdated'))
       passwordForm.current_password = ''
       passwordForm.password = ''
       passwordForm.password_confirmation = ''
@@ -138,7 +139,7 @@ export function useProfileModal() {
       if (err.response?.status === 422) {
         passwordErrors.value = err.response.data.errors || {}
       } else {
-        passwordErrors.value = { current_password: [err.response?.data?.message || 'Failed to update password.'] }
+        passwordErrors.value = { current_password: [err.response?.data?.message || i18n.global.t('validation.genericError')] }
       }
     } finally {
       passwordLoading.value = false
@@ -146,8 +147,8 @@ export function useProfileModal() {
   }
 
   async function deleteAccount() {
-    if (!confirm('⚠️ Are you sure you want to delete your ENTIRE account? This cannot be undone!')) return
-    if (!confirm('This will delete your profile, all CV data, and your account. Continue?')) return
+    if (!confirm(i18n.global.t('forms.deleteConfirm1'))) return
+    if (!confirm(i18n.global.t('forms.deleteConfirm2'))) return
     profileLoading.value = true
     try {
       await cvStore.deleteProfile()
