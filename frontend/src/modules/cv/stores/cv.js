@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import http from '@/api/http'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import { useToastStore } from '@/shared/stores/toast'
+import i18n from '@/i18n'
 
 /**
  * OPTIMIZATION #9 — Cache CV Data & Avoid Redundant Fetches
@@ -101,13 +102,13 @@ export const useCVStore = defineStore('cv', () => {
       const url = id ? `/${section}/${id}` : `/${section}`
       const method = isFormData ? 'post' : 'put'
       await http[method](url, payload, config)
-      toast.showSuccess(`${section.charAt(0).toUpperCase() + section.slice(1)} updated successfully!`)
+      toast.showSuccess(i18n.global.t('toast.updateSuccess', { section: section.charAt(0).toUpperCase() + section.slice(1) }))
       await fetchCV(true) // force=true after mutation
     } catch (err) {
       if (err.response?.status === 422) {
         throw err
       }
-      toast.showError(err.response?.data?.message || 'Failed to update. Please try again.')
+      toast.showError(err.response?.data?.message || i18n.global.t('toast.updateFailed'))
       throw err
     }
   }
@@ -120,10 +121,10 @@ export const useCVStore = defineStore('cv', () => {
     const toast = useToastStore()
     try {
       await http.delete(`/${section}/${id}`)
-      toast.showSuccess(`Deleted successfully!`)
+      toast.showSuccess(i18n.global.t('toast.deleteSuccess'))
       await fetchCV(true) // force=true after mutation
     } catch (err) {
-      toast.showError(err.response?.data?.message || 'Failed to delete. Please try again.')
+      toast.showError(err.response?.data?.message || i18n.global.t('toast.deleteFailed2'))
       throw err
     }
   }
@@ -138,11 +139,11 @@ export const useCVStore = defineStore('cv', () => {
         ? { headers: { 'Content-Type': 'multipart/form-data' } }
         : {}
       await http.post('/profile', payload, config)
-      toast.showSuccess('Profile updated successfully!')
+      toast.showSuccess(i18n.global.t('toast.profileUpdated'))
       await fetchCV(true) // force=true after mutation
     } catch (err) {
       if (err.response?.status === 422) throw err
-      toast.showError(err.response?.data?.message || 'Failed to update profile.')
+      toast.showError(err.response?.data?.message || i18n.global.t('toast.profileUpdateFailed'))
       throw err
     }
   }
@@ -154,12 +155,12 @@ export const useCVStore = defineStore('cv', () => {
     const toast = useToastStore()
     try {
       await http.delete('/profile')
-      toast.showSuccess('Account deleted successfully.')
+      toast.showSuccess(i18n.global.t('toast.accountDeleted'))
       profile.value = null
       lastFetchedAt.value = null
       authStore.logout()
     } catch (err) {
-      toast.showError(err.response?.data?.message || 'Failed to delete account.')
+      toast.showError(err.response?.data?.message || i18n.global.t('toast.deleteFailed'))
       throw err
     }
   }

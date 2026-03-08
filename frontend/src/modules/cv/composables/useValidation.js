@@ -3,6 +3,9 @@
  * Each validator returns an errors object: { fieldName: ['message'] }
  * Empty object = no errors.
  */
+import i18n from '@/i18n'
+
+const t = (key, params) => i18n.global.t(key, params)
 
 const today = () => new Date().toISOString().substring(0, 10)
 const MIN_DATE = '1950-01-01'
@@ -17,14 +20,14 @@ function isValidDate(value) {
 // ---------- PROFILE ----------
 export function validateProfile(form) {
   const e = {}
-  if (!form.headline || form.headline.trim().length < 2) e.headline = ['Headline is required (at least 2 characters).']
-  else if (form.headline.trim().length > 255) e.headline = ['Headline must be at most 255 characters.']
+  if (!form.headline || form.headline.trim().length < 2) e.headline = [t('validation.headlineRequired')]
+  else if (form.headline.trim().length > 255) e.headline = [t('validation.headlineMax')]
 
-  if (!form.summary || form.summary.trim().length < 10) e.summary = ['Summary is required (at least 10 characters).']
-  else if (form.summary.trim().length > 2000) e.summary = ['Summary must be at most 2000 characters.']
+  if (!form.summary || form.summary.trim().length < 10) e.summary = [t('validation.summaryRequired')]
+  else if (form.summary.trim().length > 2000) e.summary = [t('validation.summaryMax')]
 
-  if (!form.location || form.location.trim().length < 2) e.location = ['Location is required (at least 2 characters).']
-  else if (form.location.trim().length > 255) e.location = ['Location must be at most 255 characters.']
+  if (!form.location || form.location.trim().length < 2) e.location = [t('validation.locationRequired')]
+  else if (form.location.trim().length > 255) e.location = [t('validation.locationMax')]
 
   return e
 }
@@ -32,24 +35,24 @@ export function validateProfile(form) {
 // ---------- EXPERIENCE ----------
 export function validateExperience(form) {
   const e = {}
-  if (!form.company || form.company.trim().length < 2) e.company = ['Company name is required (at least 2 characters).']
-  else if (form.company.trim().length > 255) e.company = ['Company name must be at most 255 characters.']
+  if (!form.company || form.company.trim().length < 2) e.company = [t('validation.companyRequired')]
+  else if (form.company.trim().length > 255) e.company = [t('validation.companyMax')]
 
-  if (!form.position || form.position.trim().length < 2) e.position = ['Position is required (at least 2 characters).']
-  else if (form.position.trim().length > 255) e.position = ['Position must be at most 255 characters.']
+  if (!form.position || form.position.trim().length < 2) e.position = [t('validation.positionRequired')]
+  else if (form.position.trim().length > 255) e.position = [t('validation.positionMax')]
 
-  if (!form.start_date) e.start_date = ['Start date is required.']
-  else if (!isValidDate(form.start_date)) e.start_date = ['Start date must be a valid date (YYYY-MM-DD).']
-  else if (form.start_date < MIN_DATE) e.start_date = ['Start date must be after January 1, 1950.']
-  else if (form.start_date > today()) e.start_date = ['Start date cannot be in the future.']
+  if (!form.start_date) e.start_date = [t('validation.startDateRequired')]
+  else if (!isValidDate(form.start_date)) e.start_date = [t('validation.startDateInvalid')]
+  else if (form.start_date < MIN_DATE) e.start_date = [t('validation.startDateMin')]
+  else if (form.start_date > today()) e.start_date = [t('validation.startDateFuture')]
 
   if (form.end_date) {
-    if (!isValidDate(form.end_date)) e.end_date = ['End date must be a valid date (YYYY-MM-DD).']
-    else if (form.start_date && form.end_date < form.start_date) e.end_date = ['End date must be after the start date.']
-    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = ['End date seems unrealistic.']
+    if (!isValidDate(form.end_date)) e.end_date = [t('validation.endDateInvalid')]
+    else if (form.start_date && form.end_date < form.start_date) e.end_date = [t('validation.endDateBeforeStart')]
+    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = [t('validation.endDateUnrealistic')]
   }
 
-  if (form.description && form.description.trim().length > 2000) e.description = ['Description must be at most 2000 characters.']
+  if (form.description && form.description.trim().length > 2000) e.description = [t('validation.descriptionMax')]
 
   return e
 }
@@ -57,26 +60,26 @@ export function validateExperience(form) {
 // ---------- EDUCATION ----------
 export function validateEducation(form) {
   const e = {}
-  if (!form.institution || form.institution.trim().length < 2) e.institution = ['Institution is required (at least 2 characters).']
-  else if (form.institution.trim().length > 255) e.institution = ['Institution name must be at most 255 characters.']
+  if (!form.institution || form.institution.trim().length < 2) e.institution = [t('validation.institutionRequired')]
+  else if (form.institution.trim().length > 255) e.institution = [t('validation.institutionMax')]
 
-  if (!form.degree || form.degree.trim().length < 2) e.degree = ['Degree is required (at least 2 characters).']
-  else if (form.degree.trim().length > 255) e.degree = ['Degree must be at most 255 characters.']
+  if (!form.degree || form.degree.trim().length < 2) e.degree = [t('validation.degreeRequired')]
+  else if (form.degree.trim().length > 255) e.degree = [t('validation.degreeMax')]
 
-  if (form.field_of_study && form.field_of_study.trim().length > 255) e.field_of_study = ['Field of study must be at most 255 characters.']
+  if (form.field_of_study && form.field_of_study.trim().length > 255) e.field_of_study = [t('validation.fieldOfStudyMax')]
 
-  if (!form.start_date) e.start_date = ['Start date is required.']
-  else if (!isValidDate(form.start_date)) e.start_date = ['Start date must be a valid date (YYYY-MM-DD).']
-  else if (form.start_date < MIN_DATE) e.start_date = ['Start date must be after January 1, 1950.']
-  else if (form.start_date > today()) e.start_date = ['Start date cannot be in the future.']
+  if (!form.start_date) e.start_date = [t('validation.startDateRequired')]
+  else if (!isValidDate(form.start_date)) e.start_date = [t('validation.startDateInvalid')]
+  else if (form.start_date < MIN_DATE) e.start_date = [t('validation.startDateMin')]
+  else if (form.start_date > today()) e.start_date = [t('validation.startDateFuture')]
 
   if (form.end_date) {
-    if (!isValidDate(form.end_date)) e.end_date = ['End date must be a valid date (YYYY-MM-DD).']
-    else if (form.start_date && form.end_date < form.start_date) e.end_date = ['End date must be after the start date.']
-    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = ['End date seems unrealistic.']
+    if (!isValidDate(form.end_date)) e.end_date = [t('validation.endDateInvalid')]
+    else if (form.start_date && form.end_date < form.start_date) e.end_date = [t('validation.endDateBeforeStart')]
+    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = [t('validation.endDateUnrealistic')]
   }
 
-  if (form.description && form.description.trim().length > 2000) e.description = ['Description must be at most 2000 characters.']
+  if (form.description && form.description.trim().length > 2000) e.description = [t('validation.descriptionMax')]
 
   return e
 }
@@ -84,32 +87,32 @@ export function validateEducation(form) {
 // ---------- PROJECT ----------
 export function validateProject(form) {
   const e = {}
-  if (!form.title || form.title.trim().length < 2) e.title = ['Project title is required (at least 2 characters).']
-  else if (form.title.trim().length > 255) e.title = ['Project title must be at most 255 characters.']
+  if (!form.title || form.title.trim().length < 2) e.title = [t('validation.titleRequired')]
+  else if (form.title.trim().length > 255) e.title = [t('validation.titleMax')]
 
-  if (!form.description || form.description.trim().length < 10) e.description = ['Description is required (at least 10 characters).']
-  else if (form.description.trim().length > 2000) e.description = ['Description must be at most 2000 characters.']
+  if (!form.description || form.description.trim().length < 10) e.description = [t('validation.descriptionRequired')]
+  else if (form.description.trim().length > 2000) e.description = [t('validation.descriptionMax')]
 
   if (form.link) {
-    if (!/^https?:\/\/.+/.test(form.link)) e.link = ['Live link must be a valid URL (start with http:// or https://).']
-    else if (form.link.length > 500) e.link = ['Live link must be at most 500 characters.']
+    if (!/^https?:\/\/.+/.test(form.link)) e.link = [t('validation.linkInvalid')]
+    else if (form.link.length > 500) e.link = [t('validation.linkMax')]
   }
 
   if (form.github_url) {
-    if (!/^https?:\/\/.+/.test(form.github_url)) e.github_url = ['GitHub URL must be a valid URL (start with http:// or https://).']
-    else if (form.github_url.length > 500) e.github_url = ['GitHub URL must be at most 500 characters.']
+    if (!/^https?:\/\/.+/.test(form.github_url)) e.github_url = [t('validation.githubInvalid')]
+    else if (form.github_url.length > 500) e.github_url = [t('validation.githubMax')]
   }
 
   if (form.start_date) {
-    if (!isValidDate(form.start_date)) e.start_date = ['Start date must be a valid date (YYYY-MM-DD).']
-    else if (form.start_date < MIN_DATE) e.start_date = ['Start date must be after January 1, 1950.']
-    else if (form.start_date > today()) e.start_date = ['Start date cannot be in the future.']
+    if (!isValidDate(form.start_date)) e.start_date = [t('validation.startDateInvalid')]
+    else if (form.start_date < MIN_DATE) e.start_date = [t('validation.startDateMin')]
+    else if (form.start_date > today()) e.start_date = [t('validation.startDateFuture')]
   }
 
   if (form.end_date) {
-    if (!isValidDate(form.end_date)) e.end_date = ['End date must be a valid date (YYYY-MM-DD).']
-    else if (form.start_date && form.end_date < form.start_date) e.end_date = ['End date must be after the start date.']
-    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = ['End date seems unrealistic.']
+    if (!isValidDate(form.end_date)) e.end_date = [t('validation.endDateInvalid')]
+    else if (form.start_date && form.end_date < form.start_date) e.end_date = [t('validation.endDateBeforeStart')]
+    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = [t('validation.endDateUnrealistic')]
   }
 
   return e
@@ -118,20 +121,20 @@ export function validateProject(form) {
 // ---------- CERTIFICATION ----------
 export function validateCertification(form) {
   const e = {}
-  if (!form.name || form.name.trim().length < 2) e.name = ['Certificate name is required (at least 2 characters).']
-  else if (form.name.trim().length > 255) e.name = ['Certificate name must be at most 255 characters.']
+  if (!form.name || form.name.trim().length < 2) e.name = [t('validation.certNameRequired')]
+  else if (form.name.trim().length > 255) e.name = [t('validation.certNameMax')]
 
-  if (!form.organization || form.organization.trim().length < 2) e.organization = ['Organization is required (at least 2 characters).']
-  else if (form.organization.trim().length > 255) e.organization = ['Organization name must be at most 255 characters.']
+  if (!form.organization || form.organization.trim().length < 2) e.organization = [t('validation.organizationRequired')]
+  else if (form.organization.trim().length > 255) e.organization = [t('validation.organizationMax')]
 
-  if (!form.issue_date) e.issue_date = ['Issue date is required.']
-  else if (!isValidDate(form.issue_date)) e.issue_date = ['Issue date must be a valid date (YYYY-MM-DD).']
-  else if (form.issue_date < MIN_DATE) e.issue_date = ['Issue date must be after January 1, 1950.']
-  else if (form.issue_date > today()) e.issue_date = ['Issue date cannot be in the future.']
+  if (!form.issue_date) e.issue_date = [t('validation.issueDateRequired')]
+  else if (!isValidDate(form.issue_date)) e.issue_date = [t('validation.issueDateInvalid')]
+  else if (form.issue_date < MIN_DATE) e.issue_date = [t('validation.issueDateMin')]
+  else if (form.issue_date > today()) e.issue_date = [t('validation.issueDateFuture')]
 
   if (form.expiration_date) {
-    if (!isValidDate(form.expiration_date)) e.expiration_date = ['Expiration date must be a valid date (YYYY-MM-DD).']
-    else if (form.issue_date && form.expiration_date < form.issue_date) e.expiration_date = ['Expiration date must be after the issue date.']
+    if (!isValidDate(form.expiration_date)) e.expiration_date = [t('validation.expirationDateInvalid')]
+    else if (form.issue_date && form.expiration_date < form.issue_date) e.expiration_date = [t('validation.expirationDateBeforeIssue')]
   }
 
   return e
@@ -140,24 +143,24 @@ export function validateCertification(form) {
 // ---------- VOLUNTEER ----------
 export function validateVolunteer(form) {
   const e = {}
-  if (!form.organization || form.organization.trim().length < 2) e.organization = ['Organization is required (at least 2 characters).']
-  else if (form.organization.trim().length > 255) e.organization = ['Organization name must be at most 255 characters.']
+  if (!form.organization || form.organization.trim().length < 2) e.organization = [t('validation.organizationRequired')]
+  else if (form.organization.trim().length > 255) e.organization = [t('validation.organizationMax')]
 
-  if (!form.role || form.role.trim().length < 2) e.role = ['Role is required (at least 2 characters).']
-  else if (form.role.trim().length > 255) e.role = ['Role must be at most 255 characters.']
+  if (!form.role || form.role.trim().length < 2) e.role = [t('validation.roleRequired')]
+  else if (form.role.trim().length > 255) e.role = [t('validation.roleMax')]
 
-  if (!form.start_date) e.start_date = ['Start date is required.']
-  else if (!isValidDate(form.start_date)) e.start_date = ['Start date must be a valid date (YYYY-MM-DD).']
-  else if (form.start_date < MIN_DATE) e.start_date = ['Start date must be after January 1, 1950.']
-  else if (form.start_date > today()) e.start_date = ['Start date cannot be in the future.']
+  if (!form.start_date) e.start_date = [t('validation.startDateRequired')]
+  else if (!isValidDate(form.start_date)) e.start_date = [t('validation.startDateInvalid')]
+  else if (form.start_date < MIN_DATE) e.start_date = [t('validation.startDateMin')]
+  else if (form.start_date > today()) e.start_date = [t('validation.startDateFuture')]
 
   if (form.end_date) {
-    if (!isValidDate(form.end_date)) e.end_date = ['End date must be a valid date (YYYY-MM-DD).']
-    else if (form.start_date && form.end_date < form.start_date) e.end_date = ['End date must be after the start date.']
-    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = ['End date seems unrealistic.']
+    if (!isValidDate(form.end_date)) e.end_date = [t('validation.endDateInvalid')]
+    else if (form.start_date && form.end_date < form.start_date) e.end_date = [t('validation.endDateBeforeStart')]
+    else if (form.end_date > MAX_FUTURE_DATE) e.end_date = [t('validation.endDateUnrealistic')]
   }
 
-  if (form.description && form.description.trim().length > 2000) e.description = ['Description must be at most 2000 characters.']
+  if (form.description && form.description.trim().length > 2000) e.description = [t('validation.descriptionMax')]
 
   return e
 }
