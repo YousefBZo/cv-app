@@ -1,7 +1,6 @@
 <script setup>
-/**
- * CertificationsSection — grid of certification cards.
- */
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   certifications: { type: Array, default: () => [] },
   hasMore: { type: Boolean, default: false },
@@ -9,12 +8,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Certifications</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.certificationsTitle') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -44,12 +44,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No certifications added yet. <router-link to="/certification" class="text-amber-400 hover:underline">Add one →</router-link>
+      {{ t('cv.noCertifications') }} <router-link to="/certification" class="text-amber-400 hover:underline">{{ t('cv.addCertification') }}</router-link>
     </p>
 
     <div class="mt-12 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition-all text-xs font-bold uppercase tracking-widest">View More Certifications</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-amber-400 transition-all text-xs font-bold uppercase tracking-widest">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-400 hover:text-amber-400 hover:border-amber-500/30 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.viewMoreCertifications') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="px-5 sm:px-8 py-2 sm:py-3 rounded-full border border-slate-700 text-slate-500 hover:text-amber-400 transition-all text-xs font-bold uppercase tracking-widest">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>

@@ -1,7 +1,5 @@
 <script setup>
-/**
- * SkillsSection — grid of skill cards with animated level bars.
- */
+import { useI18n } from 'vue-i18n'
 import { getSkillLevel } from '@/modules/cv/composables/useLevelHelpers'
 
 defineProps({
@@ -12,12 +10,13 @@ defineProps({
 })
 
 const emit = defineEmits(['edit', 'showAll', 'showLess'])
+const { t } = useI18n()
 </script>
 
 <template>
   <section class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6">
     <div class="flex items-center gap-4 mb-8 sm:mb-12">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">Skills</h2>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">{{ t('cv.skills') }}</h2>
       <div class="h-px flex-1 bg-linear-to-r from-blue-500/50 to-transparent"></div>
     </div>
 
@@ -39,12 +38,12 @@ const emit = defineEmits(['edit', 'showAll', 'showLess'])
     </div>
 
     <p v-else class="text-center text-slate-600 text-sm py-8">
-      No skills added yet. <router-link to="/skill" class="text-blue-400 hover:underline">Add some →</router-link>
+      {{ t('cv.noSkills') }} <router-link to="/skill" class="text-blue-400 hover:underline">{{ t('cv.addSkills') }}</router-link>
     </p>
 
     <div class="mt-8 flex justify-center gap-4">
-      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 text-xs font-bold uppercase tracking-widest">+ See All Skills</button>
-      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 text-xs font-bold uppercase tracking-widest hover:underline">− Show Less</button>
+      <button v-if="hasMore" @click="emit('showAll')" class="text-blue-400 text-xs font-bold uppercase tracking-widest">{{ t('cv.seeAllSkills') }}</button>
+      <button v-if="isExpanded" @click="emit('showLess')" class="text-slate-500 text-xs font-bold uppercase tracking-widest hover:underline">{{ t('cv.showLess') }}</button>
     </div>
   </section>
 </template>
