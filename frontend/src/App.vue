@@ -49,7 +49,7 @@ const isAuthPage = computed(() => ['Login', 'Register'].includes(route.name));
           <div>
             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">{{ t('footer.quickLinks') }}</h4>
             <ul class="space-y-2">
-              <li v-for="link in [{name: t('nav.home'), path:'/'}, {name: t('nav.cv'), path:'/cv'}, {name: t('sidebar.projects'), path:'/project'}]" :key="link.name">
+              <li v-for="link in [{name: t('nav.home'), path:'/'}, {name: t('nav.explore'), path:'/#explore'}, {name: t('nav.cv'), path:'/cv'}, {name: t('sidebar.projects'), path:'/project'}]" :key="link.name">
                 <router-link :to="link.path" class="text-slate-500 hover:text-blue-400 text-sm transition-colors">{{ link.name }}</router-link>
               </li>
             </ul>
