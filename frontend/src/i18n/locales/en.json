@@ -6,6 +6,7 @@
 
   "nav": {
     "home": "Home",
+    "explore": "Explore",
     "cv": "CV",
     "logout": "Logout",
     "signIn": "Sign In",
@@ -275,6 +276,43 @@
     "usingTech": "using Vue & Laravel"
   },
 
+  "explore": {
+    "heroDescription": "Create a stunning CV, showcase your expertise, and connect with recruiters worldwide. Browse profiles and discover talent.",
+    "browseProfiles": "Browse Profiles",
+    "totalProfiles": "Profiles",
+    "globalReach": "Global Reach",
+    "securePrivate": "Secure & Private",
+    "directory": "Profile Directory",
+    "discoverTalent": "Discover Talent",
+    "directorySubtitle": "Browse professionals, view their CVs, and connect with the right people. Share any CV link with recruiters.",
+    "searchPlaceholder": "Search by name, title, or location...",
+    "viewCV": "View CV",
+    "noProfiles": "No Profiles Found",
+    "noProfilesSubtitle": "No profiles match your search. Try a different keyword or check back later.",
+    "loadMore": "Load More Profiles",
+    "loading": "Loading...",
+    "showingOf": "Showing {showing} of {total} profiles",
+    "skills": "{count} Skills",
+    "experiences": "{count} Exp.",
+    "projects": "{count} Projects",
+    "educations": "{count} Education",
+    "profileNotFound": "Profile Not Found",
+    "backToDirectory": "Back to Directory",
+    "shareCV": "Share CV",
+    "copied": "Copied!",
+    "linkCopied": "CV link copied to clipboard!",
+    "sortNewest": "🕐 Newest First",
+    "sortOldest": "🕐 Oldest First",
+    "sortNameAZ": "🔤 Name A → Z",
+    "sortNameZA": "🔤 Name Z → A",
+    "sortMostSkills": "⚡ Most Skills",
+    "sortMostExp": "💼 Most Experience",
+    "allLocations": "All Locations",
+    "clearFilters": "Clear Filters",
+    "downloadCV": "Download PDF",
+    "generating": "Generating..."
+  },
+
   "toast": {
     "networkError": "Network error — please check your connection or the server may be down.",
     "sessionExpired": "Session expired. Please log in again.",
@@ -387,5 +425,35 @@
     "projects": "Projects",
     "certCredentials": "Certification Credentials",
     "volunteer": "Volunteer"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet",
+    "markAllRead": "Mark all as read",
+    "loadMore": "Load More",
+    "someone": "Someone",
+    "liked": "liked",
+    "loved": "loved",
+    "celebrated": "celebrated",
+    "found_insightful": "found insightful",
+    "is_curious": "is curious about",
+    "reacted_like": "liked",
+    "reacted_love": "loved",
+    "reacted_celebrate": "celebrated",
+    "reacted_insightful": "found insightful",
+    "reacted_curious": "is curious about",
+    "reactionText": "{name} {reaction} your profile",
+    "viewText": "{name} viewed your CV",
+    "genericText": "You have a new notification",
+    "like": "Like",
+    "love": "Love",
+    "celebrate": "Celebrate",
+    "insightful": "Insightful",
+    "curious": "Curious",
+    "views": "{count} views",
+    "totalReactions": "{count} reactions",
+    "loginToReact": "Sign in to react to this profile",
+    "cannotReactSelf": "You cannot react to your own profile"
   }
 }

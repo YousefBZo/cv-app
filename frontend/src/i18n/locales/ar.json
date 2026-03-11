@@ -6,6 +6,7 @@
 
   "nav": {
     "home": "الرئيسية",
+    "explore": "استكشاف",
     "cv": "السيرة الذاتية",
     "logout": "تسجيل الخروج",
     "signIn": "تسجيل الدخول",
@@ -275,6 +276,43 @@
     "usingTech": "باستخدام Vue و Laravel"
   },
 
+  "explore": {
+    "heroDescription": "أنشئ سيرة ذاتية مذهلة، واعرض خبراتك، وتواصل مع مسؤولي التوظيف حول العالم. تصفح الملفات الشخصية واكتشف المواهب.",
+    "browseProfiles": "تصفح الملفات الشخصية",
+    "totalProfiles": "ملفات شخصية",
+    "globalReach": "وصول عالمي",
+    "securePrivate": "آمن وخاص",
+    "directory": "دليل الملفات الشخصية",
+    "discoverTalent": "اكتشف المواهب",
+    "directorySubtitle": "تصفح المحترفين، واستعرض سيرهم الذاتية، وتواصل مع الأشخاص المناسبين. شارك رابط أي سيرة ذاتية مع مسؤولي التوظيف.",
+    "searchPlaceholder": "ابحث بالاسم، المسمى الوظيفي، أو الموقع...",
+    "viewCV": "عرض السيرة الذاتية",
+    "noProfiles": "لم يتم العثور على ملفات شخصية",
+    "noProfilesSubtitle": "لا توجد ملفات شخصية تطابق بحثك. جرب كلمة مفتاحية مختلفة أو عد لاحقاً.",
+    "loadMore": "تحميل المزيد",
+    "loading": "جارٍ التحميل...",
+    "showingOf": "عرض {showing} من {total} ملف شخصي",
+    "skills": "{count} مهارات",
+    "experiences": "{count} خبرات",
+    "projects": "{count} مشاريع",
+    "educations": "{count} تعليم",
+    "profileNotFound": "الملف الشخصي غير موجود",
+    "backToDirectory": "العودة إلى الدليل",
+    "shareCV": "مشاركة السيرة الذاتية",
+    "copied": "تم النسخ!",
+    "linkCopied": "تم نسخ رابط السيرة الذاتية!",
+    "sortNewest": "🕐 الأحدث أولاً",
+    "sortOldest": "🕐 الأقدم أولاً",
+    "sortNameAZ": "🔤 الاسم أ → ي",
+    "sortNameZA": "🔤 الاسم ي → أ",
+    "sortMostSkills": "⚡ الأكثر مهارات",
+    "sortMostExp": "💼 الأكثر خبرة",
+    "allLocations": "جميع المواقع",
+    "clearFilters": "مسح الفلاتر",
+    "downloadCV": "تحميل PDF",
+    "generating": "جارٍ الإنشاء..."
+  },
+
   "toast": {
     "networkError": "خطأ في الشبكة — يرجى التحقق من اتصالك أو قد يكون الخادم معطلاً.",
     "sessionExpired": "انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.",
@@ -387,5 +425,35 @@
     "projects": "المشاريع",
     "certCredentials": "اعتمادات الشهادات",
     "volunteer": "التطوع"
+  },
+
+  "notifications": {
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات بعد",
+    "markAllRead": "تعيين الكل كمقروء",
+    "loadMore": "تحميل المزيد",
+    "someone": "شخص ما",
+    "liked": "أعجب بـ",
+    "loved": "أحبّ",
+    "celebrated": "احتفى بـ",
+    "found_insightful": "وجد ملهماً",
+    "is_curious": "مهتم بـ",
+    "reacted_like": "أعجب بـ",
+    "reacted_love": "أحبّ",
+    "reacted_celebrate": "احتفى بـ",
+    "reacted_insightful": "وجد ملهماً",
+    "reacted_curious": "مهتم بـ",
+    "reactionText": "{name} {reaction} ملفك الشخصي",
+    "viewText": "{name} شاهد سيرتك الذاتية",
+    "genericText": "لديك إشعار جديد",
+    "like": "إعجاب",
+    "love": "أحبّه",
+    "celebrate": "احتفاء",
+    "insightful": "ملهم",
+    "curious": "فضولي",
+    "views": "{count} مشاهدات",
+    "totalReactions": "{count} تفاعلات",
+    "loginToReact": "سجّل دخولك للتفاعل مع هذا الملف الشخصي",
+    "cannotReactSelf": "لا يمكنك التفاعل مع ملفك الشخصي"
   }
 }
