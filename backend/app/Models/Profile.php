@@ -73,4 +73,20 @@ class Profile extends Model
             ->withPivot('level')
             ->withTimestamps();
     }
+
+    /**
+     * Reactions received on this profile (likes/loves from other users).
+     */
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * Views this profile has received.
+     */
+    public function views(): HasMany
+    {
+        return $this->hasMany(ProfileView::class);
+    }
 }

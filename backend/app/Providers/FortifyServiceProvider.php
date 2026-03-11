@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Illuminate\Http\JsonResponse;
 
 
@@ -56,6 +57,19 @@ class FortifyServiceProvider extends ServiceProvider
 
                     return $request->wantsJson()
                         ? new JsonResponse(['token' => $token, 'two_factor' => false], 200)
+                        : redirect()->intended(config('fortify.home'));
+                }
+            };
+        });
+
+        $this->app->singleton(RegisterResponseContract::class, function ($app) {
+            return new class implements RegisterResponseContract {
+                public function toResponse($request)
+                {
+                    $token = $request->user()->createToken('postman-token')->plainTextToken;
+
+                    return $request->wantsJson()
+                        ? new JsonResponse(['token' => $token], 201)
                         : redirect()->intended(config('fortify.home'));
                 }
             };

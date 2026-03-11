@@ -98,6 +98,7 @@ export function useDownloadCV() {
 
     let wrapper = null
     const isArabic = i18n.global.locale.value === 'ar'
+    const disabledSheets = []
 
     try {
       const html2pdf = (await import('html2pdf.js')).default
@@ -171,7 +172,28 @@ export function useDownloadCV() {
 
       const filename = `${userName.replace(/\s+/g, '_')}_CV.pdf`
 
-      // 6. Generate PDF
+      // 6. OKLCH FIX: Disable stylesheets containing oklch() before html2canvas.
+      //    html2canvas parses ALL document.styleSheets. Tailwind CSS v4 emits
+      //    oklch() color functions that html2canvas can't parse, causing a crash.
+      //    CVPrintLayout uses only inline styles, so disabling sheets is safe.
+      for (const sheet of document.styleSheets) {
+        if (sheet.disabled) continue
+        try {
+          const rules = sheet.cssRules || sheet.rules
+          if (!rules) continue
+          for (const rule of rules) {
+            if (rule.cssText && rule.cssText.includes('oklch')) {
+              sheet.disabled = true
+              disabledSheets.push(sheet)
+              break
+            }
+          }
+        } catch {
+          // CORS sheets — can't read rules, skip
+        }
+      }
+
+      // 7. Generate PDF
       await html2pdf()
         .set({
           margin:      0,
@@ -194,6 +216,10 @@ export function useDownloadCV() {
     } catch (err) {
       console.error('PDF generation failed:', err)
     } finally {
+      // Re-enable all stylesheets we disabled
+      for (const sheet of disabledSheets) {
+        sheet.disabled = false
+      }
       if (wrapper?.parentNode) wrapper.parentNode.removeChild(wrapper)
       generating.value = false
     }

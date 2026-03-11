@@ -17,6 +17,7 @@ class UserResource extends JsonResource
             'id'      => $this->id,
             'name'    => $this->name,
             'email'   => $this->email,
+            'slug'    => $this->slug,
             'profile' => ProfileResource::make($this->whenLoaded('profile')),
         ];
     }

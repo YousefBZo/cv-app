@@ -27,9 +27,13 @@ export const useAuthStore = defineStore('auth', () => {
   /**
    * Register a new account.
    * Uses Fortify's POST /register endpoint (prefixed at /api/v1/register).
+   * Fortify returns a Sanctum token because we customised RegisterResponse.
    */
   async function register(name, email, password, password_confirmation) {
-    await http.post('/register', { name, email, password, password_confirmation })
+    const { data } = await http.post('/register', { name, email, password, password_confirmation })
+
+    token.value = data.token
+    localStorage.setItem('auth_token', data.token)
 
     await fetchUser()
   }

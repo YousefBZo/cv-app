@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useCVStore } from '@/modules/cv/stores/cv'
 import { useAuthStore } from '@/modules/auth/stores/auth'
 import { useLocale } from '@/shared/composables/useLocale'
+import NotificationBell from '@/shared/components/NotificationBell.vue'
 
 const cvStore = useCVStore()
 const authStore = useAuthStore()
@@ -14,6 +15,7 @@ const { t, toggleLocale, locale, isRTL } = useLocale()
 
 const navLinks = [
   { key: 'nav.home', path: '/', icon: '🏠' },
+  { key: 'nav.explore', path: '/', hash: '#explore', icon: '🔍' },
   { key: 'nav.cv', path: '/cv', icon: '📄' },
 ]
 
@@ -67,7 +69,7 @@ const goTo = (path) => {
       <!-- Center: Nav links (desktop) -->
       <ul class="hidden md:flex items-center gap-1">
         <li v-for="link in navLinks" :key="link.key">
-          <router-link :to="link.path"
+          <router-link :to="{ path: link.path, hash: link.hash }"
             class="px-4 py-2 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 transition-all">
             {{ t(link.key) }}
           </router-link>
@@ -84,6 +86,9 @@ const goTo = (path) => {
         </button>
 
         <template v-if="authStore.isAuthenticated">
+          <!-- Notification Bell -->
+          <NotificationBell />
+
           <button @click="handleLogout"
             class="hidden md:inline-flex px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-400/30 transition-all">
             {{ t('nav.logout') }}
@@ -112,7 +117,7 @@ const goTo = (path) => {
 
     <!-- Mobile dropdown -->
     <div v-if="mobileOpen" class="md:hidden border-t border-white/5 bg-black/60 backdrop-blur-xl px-4 py-3 space-y-1">
-      <router-link v-for="link in navLinks" :key="link.key" :to="link.path" @click="mobileOpen = false"
+      <router-link v-for="link in navLinks" :key="link.key" :to="{ path: link.path, hash: link.hash }" @click="mobileOpen = false"
         class="block px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all">
         {{ link.icon }} {{ t(link.key) }}
       </router-link>
