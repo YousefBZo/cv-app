@@ -11,6 +11,8 @@ import { usePagination } from '@/modules/cv/composables/usePagination'
 import { useEditModal } from '@/modules/cv/composables/useEditModal'
 import { useProfileModal } from '@/modules/cv/composables/useProfileModal'
 import { useDownloadCV } from '@/modules/cv/composables/useDownloadCV'
+import { useAuthStore } from '@/modules/auth/stores/auth'
+import { useToastStore } from '@/shared/stores/toast'
 
 import CVSkeleton from '@/modules/cv/components/CVSkeleton.vue'
 import CVPrintLayout from '@/modules/cv/components/CVPrintLayout.vue'
@@ -28,6 +30,9 @@ import ProfileEditModal from '@/modules/cv/components/ProfileEditModal.vue'
 const cvStore = useCVStore()
 const { t } = useI18n()
 const isVisible = ref(false)
+const auth = useAuthStore()
+const toast = useToastStore()
+const shareCopied = ref(false)
 
 onMounted(() => {
   cvStore.fetchCV()
@@ -46,6 +51,15 @@ const { displayed: displayedLanguages, hasMore: hasMoreLang, isExpanded: isExpan
 const editModal = useEditModal()
 const profileModal = useProfileModal()
 const { generating, downloadCV } = useDownloadCV()
+
+function shareCV() {
+  const url = `${window.location.origin}/u/${auth.user?.slug}`
+  navigator.clipboard.writeText(url).then(() => {
+    shareCopied.value = true
+    toast.showSuccess(t('explore.linkCopied'))
+    setTimeout(() => { shareCopied.value = false }, 2000)
+  })
+}
 
 function onEditItem(section, item) {
   const titles = {
@@ -80,8 +94,26 @@ function onEditItem(section, item) {
     </div>
 
     <template v-else>
-      <!-- Download CV floating button -->
-      <div class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50">
+      <!-- Floating action buttons (Download + Share) -->
+      <div class="fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-50 flex flex-col gap-3 items-end">
+        <!-- Share CV button -->
+        <button
+          @click="shareCV"
+          class="group flex items-center justify-center gap-2 sm:gap-2.5 p-3.5 sm:pl-5 sm:pr-6 sm:py-3.5 rounded-full text-sm font-semibold text-white shadow-xl transition-all duration-300"
+          :class="shareCopied
+            ? 'bg-green-600 scale-95'
+            : 'bg-linear-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 hover:shadow-cyan-500/30 hover:scale-105 active:scale-95'"
+          :title="t('explore.shareCV')"
+        >
+          <svg v-if="!shareCopied" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+          </svg>
+          <svg v-else class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span class="hidden sm:inline">{{ shareCopied ? t('explore.copied') : t('explore.shareCV') }}</span>
+        </button>
+        <!-- Download CV button -->
         <button
           @click="downloadCV(cvStore.userName)"
           :disabled="generating"
