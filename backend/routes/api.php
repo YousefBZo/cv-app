@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\CVController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\PublicProfileController;
 use App\Http\Controllers\Api\V1\CertificationController;
 use App\Http\Controllers\Api\V1\EducationController;
 use App\Http\Controllers\Api\V1\ExperienceController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\VolunteerExperienceController;
 use App\Http\Controllers\Api\V1\LanguageController;
 use App\Http\Controllers\Api\V1\SkillController;
+use App\Http\Controllers\Api\V1\ReactionController;
+use App\Http\Controllers\Api\V1\NotificationController;
 
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UpdateUserNameRequest;
@@ -36,17 +39,50 @@ use App\Http\Requests\UpdateUserPasswordRequest;
  * RESPONSE: When limit is exceeded, Laravel returns 429 Too Many Requests.
  *           The frontend http.js interceptor already handles 429 with a toast.
  */
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes (No Authentication Required)
+|--------------------------------------------------------------------------
+|
+| These endpoints allow anyone to browse profiles and view CVs.
+| Recruiters, visitors, and shared-link recipients can access these
+| without creating an account. Rate-limited to prevent scraping.
+|
+*/
+Route::prefix('v1')->middleware('throttle:api')->group(function () {
+    Route::get('/public/profiles', [PublicProfileController::class, 'index']);
+    Route::get('/public/profiles/locations', [PublicProfileController::class, 'locations']);
+    Route::get('/public/profiles/{slug}', [PublicProfileController::class, 'show']);
+
+    // Reactions — public read (anyone can see counts)
+    Route::get('/reactions/{profileId}', [ReactionController::class, 'show']);
+
+    // Profile views — can be recorded by anyone (guests get viewer_id=null)
+    Route::post('/profile-views/{profileId}', [ReactionController::class, 'recordView']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
 Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     // Authenticated user
     Route::get('/user', fn (\Illuminate\Http\Request $request) => UserResource::make($request->user()));
 
     // Update user name
     Route::put('/user/name', function (UpdateUserNameRequest $request) {
-        $request->user()->update($request->validated());
+        $validated = $request->validated();
+        $user = $request->user();
+        $user->update([
+            'name' => $validated['name'],
+            'slug' => \App\Models\User::generateUniqueSlug($validated['name'], $user->id),
+        ]);
         return response()->json([
             'success' => true,
             'message' => 'Name updated successfully.',
-            'data'    => UserResource::make($request->user()->fresh()),
+            'data'    => UserResource::make($user->fresh()),
         ]);
     });
 
@@ -120,5 +156,14 @@ Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api'])->group(functio
     Route::post('/skill', [SkillController::class, 'store']);
     Route::put('/skill/{skillId}', [SkillController::class, 'update']);
     Route::delete('/skill/{skillId}', [SkillController::class, 'destroy']);
+
+    // Reactions — toggle (like/love)
+    Route::post('/reactions/toggle', [ReactionController::class, 'toggle']);
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 });
 
