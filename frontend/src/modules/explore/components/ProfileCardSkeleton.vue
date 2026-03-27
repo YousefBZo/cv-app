@@ -30,7 +30,7 @@
       <div class="h-5 w-18 bg-white/6 animate-pulse rounded-full"></div>
     </div>
     <!-- Footer skeleton -->
-    <div class="border-t border-white/5 px-5 py-3">
+    <div class="border-t border-slate-200 dark:border-white/5 px-5 py-3">
       <div class="h-2.5 w-16 bg-white/6 animate-pulse rounded"></div>
     </div>
   </div>

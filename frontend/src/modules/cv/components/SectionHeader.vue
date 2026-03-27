@@ -13,7 +13,7 @@ defineProps({
       {{ icon }}
     </div>
     <div>
-      <h1 class="text-xl font-bold text-white">{{ title }}</h1>
+      <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ title }}</h1>
       <p v-if="subtitle" class="text-xs text-slate-500">{{ subtitle }}</p>
     </div>
   </div>

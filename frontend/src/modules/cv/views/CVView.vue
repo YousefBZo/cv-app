@@ -6,6 +6,7 @@
  */
 import { onMounted, watch, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useDark } from '@vueuse/core'
 import { useCVStore } from '@/modules/cv/stores/cv'
 import { usePagination } from '@/modules/cv/composables/usePagination'
 import { useEditModal } from '@/modules/cv/composables/useEditModal'
@@ -29,6 +30,7 @@ import ProfileEditModal from '@/modules/cv/components/ProfileEditModal.vue'
 
 const cvStore = useCVStore()
 const { t } = useI18n()
+const isDark = useDark()
 const isVisible = ref(false)
 const auth = useAuthStore()
 const toast = useToastStore()
@@ -76,15 +78,15 @@ function onEditItem(section, item) {
 </script>
 
 <template>
-  <div class="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30 overflow-x-hidden pb-20"
-    style="background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);">
+  <div class="min-h-screen text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-500/30 overflow-x-hidden pb-20 cv-bg-dynamic"
+    :class="{ 'cv-bg-dark': isDark }">
 
     <CVSkeleton v-if="cvStore.loading || !cvStore.hasFetched" />
 
     <div v-else-if="!cvStore.hasProfile" class="flex items-center justify-center min-h-[60vh]">
       <div class="text-center space-y-6 max-w-md mx-auto px-6">
         <div class="text-6xl">&#x1F464;</div>
-        <h2 class="text-2xl font-bold text-white">{{ t('cv.noProfileTitle') }}</h2>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ t('cv.noProfileTitle') }}</h2>
         <p class="text-slate-400">{{ t('cv.noProfileText') }}</p>
         <router-link to="/profile"
           class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
@@ -205,3 +207,11 @@ function onEditItem(section, item) {
     <CVPrintLayout />
   </div>
 </template>
+<style scoped>
+.cv-bg-dark {
+  background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);
+}
+.cv-bg-dynamic {
+  background-color: transparent;
+}
+</style>

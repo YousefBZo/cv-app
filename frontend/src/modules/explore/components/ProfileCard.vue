@@ -57,11 +57,11 @@ const badges = computed(() => {
             v-if="profile.photo"
             :src="profile.photo"
             :alt="profile.user_name"
-            class="w-14 h-14 rounded-full object-cover border-2 border-white/10 group-hover:border-blue-400/30 transition-colors"
+            class="w-14 h-14 rounded-full object-cover border-2 border-slate-200 dark:border-white/10 group-hover:border-blue-400/30 transition-colors"
           />
           <div
             v-else
-            class="w-14 h-14 rounded-full bg-linear-to-br from-blue-500/20 to-indigo-500/20 border-2 border-white/10 group-hover:border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-sm transition-colors"
+            class="w-14 h-14 rounded-full bg-linear-to-br from-blue-500/20 to-indigo-500/20 border-2 border-slate-200 dark:border-white/10 group-hover:border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-sm transition-colors"
           >
             {{ initials }}
           </div>
@@ -70,10 +70,10 @@ const badges = computed(() => {
 
       <!-- Name + Headline -->
       <div class="flex-1 min-w-0">
-        <h3 class="text-sm font-bold text-white group-hover:text-blue-400 transition-colors truncate">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-400 transition-colors truncate">
           {{ profile.user_name }}
         </h3>
-        <p class="text-xs text-slate-400 mt-0.5 line-clamp-1">
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5 line-clamp-1">
           {{ profile.headline }}
         </p>
         <div v-if="profile.location" class="flex items-center gap-1 mt-1.5 text-[11px] text-slate-500">
@@ -106,7 +106,7 @@ const badges = computed(() => {
     </div>
 
     <!-- View CV footer -->
-    <div class="mt-auto border-t border-white/5 px-5 py-3 flex items-center justify-between">
+    <div class="mt-auto border-t border-slate-200 dark:border-white/5 px-5 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-[10px] font-semibold text-blue-400/60 uppercase tracking-widest group-hover:text-blue-400 transition-colors">
           {{ t('explore.viewCV') }}
