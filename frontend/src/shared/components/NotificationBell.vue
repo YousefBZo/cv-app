@@ -119,7 +119,7 @@ function loadMore() {
     <!-- Bell Button -->
     <button
       @click="togglePanel"
-      class="relative p-1.5 rounded-lg hover:bg-white/5 transition-colors text-slate-400 hover:text-white"
+      class="relative p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
       :title="t('notifications.title')"
     >
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ function loadMore() {
       <!-- Unread badge -->
       <Transition name="badge">
         <span v-if="notifStore.hasUnread"
-          class="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-4.5 h-4.5 px-1 rounded-full text-[10px] font-bold text-white bg-red-500 shadow-lg shadow-red-500/30 animate-pulse">
+          class="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-4.5 h-4.5 px-1 rounded-full text-[10px] font-bold text-slate-900 dark:text-white bg-red-500 shadow-lg shadow-red-500/30 animate-pulse">
           {{ notifStore.unreadCount > 99 ? '99+' : notifStore.unreadCount }}
         </span>
       </Transition>
@@ -139,20 +139,20 @@ function loadMore() {
     <!-- Dropdown Panel -->
     <Transition name="dropdown">
       <div v-if="open"
-        class="fixed inset-x-3 top-14 sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 w-auto sm:w-96 bg-slate-950/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50"
+        class="fixed inset-x-3 top-14 sm:absolute sm:inset-x-auto sm:top-full sm:mt-2 w-auto sm:w-96 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50"
         :class="$i18n.locale === 'ar' ? 'sm:left-0' : 'sm:right-0'">
 
         <!-- Header -->
-        <div class="flex items-center justify-between px-4 py-3 border-b border-white/5">
-          <h3 class="text-sm font-bold text-white">{{ t('notifications.title') }}</h3>
+        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-white/5">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ t('notifications.title') }}</h3>
           <div class="flex items-center gap-3">
             <button v-if="notifStore.hasUnread"
               @click="handleMarkAllRead"
-              class="text-[11px] text-blue-400 hover:text-blue-300 font-medium transition-colors">
+              class="text-[11px] text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors">
               {{ t('notifications.markAllRead') }}
             </button>
             <!-- Close button (mobile) -->
-            <button @click="closePanel" class="sm:hidden p-1 -m-1 rounded-lg hover:bg-white/5 text-slate-500 hover:text-white transition-colors">
+            <button @click="closePanel" class="sm:hidden p-1 -m-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 hover:text-slate-900 dark:text-white transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
@@ -178,23 +178,23 @@ function loadMore() {
             v-for="notif in notifStore.notifications"
             :key="notif.id"
             @click="handleNotifClick(notif)"
-            class="w-full flex items-start gap-3 px-4 py-3 text-start transition-colors hover:bg-white/5 active:bg-white/10"
-            :class="{ 'bg-blue-500/5': !notif.is_read }"
+            class="w-full flex items-start gap-3 px-4 py-3 text-start transition-colors hover:bg-slate-100 dark:hover:bg-white/5 active:bg-slate-200 dark:active:bg-white/10"
+            :class="{ 'bg-blue-50 dark:bg-blue-500/5': !notif.is_read }"
           >
             <!-- Icon -->
             <div class="shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-lg"
-              :class="notif.is_read ? 'bg-white/5' : 'bg-blue-500/10'">
+              :class="notif.is_read ? 'bg-slate-100 dark:bg-white/5' : 'bg-blue-100 dark:bg-blue-500/10'">
               {{ getNotificationIcon(notif.type, notif.data) }}
             </div>
 
             <!-- Content -->
             <div class="flex-1 min-w-0">
               <p class="text-xs leading-relaxed"
-                :class="notif.is_read ? 'text-slate-500' : 'text-slate-300'">
+                :class="notif.is_read ? 'text-slate-500 dark:text-slate-400' : 'text-slate-900 dark:text-slate-200'">
                 {{ getNotificationText(notif) }}
               </p>
               <p class="text-[10px] mt-0.5"
-                :class="notif.is_read ? 'text-slate-600' : 'text-blue-400/60'">
+                :class="notif.is_read ? 'text-slate-400 dark:text-slate-500' : 'text-blue-500 dark:text-blue-400/60'">
                 {{ notif.time_ago }}
               </p>
             </div>
@@ -208,9 +208,9 @@ function loadMore() {
 
         <!-- Load more -->
         <div v-if="notifStore.pagination.currentPage < notifStore.pagination.lastPage"
-          class="border-t border-white/5 p-2">
+          class="border-t border-slate-200 dark:border-white/5 p-2">
           <button @click="loadMore"
-            class="w-full py-2 text-xs text-blue-400 hover:text-blue-300 font-medium transition-colors rounded-lg hover:bg-white/5">
+            class="w-full py-2 text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-white/5">
             {{ t('notifications.loadMore') }}
           </button>
         </div>

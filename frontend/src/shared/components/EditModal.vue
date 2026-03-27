@@ -21,12 +21,12 @@ const { t } = useI18n()
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="emit('close')"></div>
 
         <!-- Modal -->
-        <div class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-slate-900 border border-white/10 rounded-2xl shadow-2xl z-10">
+        <div class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-10">
           <!-- Header -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-white/5">
-            <h2 class="text-lg font-bold text-white">{{ title }}</h2>
+          <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-white/5">
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white">{{ title }}</h2>
             <button @click="emit('close')"
-              class="p-1.5 rounded-lg hover:bg-white/5 text-slate-500 hover:text-white transition-colors">
+              class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 hover:text-slate-900 dark:text-white transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
               </svg>
@@ -39,7 +39,7 @@ const { t } = useI18n()
           </div>
 
           <!-- Footer -->
-          <div class="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-white/5">
             <button v-if="showDelete" @click="emit('delete')" :disabled="loading"
               class="px-4 py-2 rounded-lg text-xs font-semibold text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all disabled:opacity-50">
               <span v-if="loading"><LoadingSpinner /></span>
@@ -47,7 +47,7 @@ const { t } = useI18n()
             </button>
             <div v-else></div>
             <button @click="emit('close')"
-              class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 border border-white/10 hover:bg-white/5 transition-all">
+              class="px-4 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 transition-all">
               {{ t('forms.cancel') }}
             </button>
           </div>

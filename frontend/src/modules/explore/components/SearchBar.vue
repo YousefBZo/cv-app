@@ -88,14 +88,14 @@ function clearAll() {
         v-model="query"
         type="text"
         :placeholder="t('explore.searchPlaceholder')"
-        class="w-full py-3 ps-11 pe-20 rounded-xl text-sm text-white placeholder-slate-500 bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm"
+        class="w-full py-3 ps-11 pe-20 rounded-xl text-sm text-slate-900 dark:text-white placeholder-slate-500 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm"
       />
 
       <!-- Clear button -->
       <button
         v-if="query"
         @click="clear"
-        class="absolute end-14 p-1 rounded-md text-slate-500 hover:text-white hover:bg-white/10 transition-colors"
+        class="absolute end-14 p-1 rounded-md text-slate-500 hover:text-slate-900 dark:text-white hover:bg-white/10 transition-colors"
       >
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -115,9 +115,9 @@ function clearAll() {
         <select
           :value="sortBy"
           @change="onSortChange"
-          class="appearance-none py-2 ps-3 pe-8 rounded-lg text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm cursor-pointer"
+          class="appearance-none py-2 ps-3 pe-8 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm cursor-pointer"
         >
-          <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value" class="bg-slate-900 text-slate-300">
+          <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
             {{ t(opt.labelKey) }}
           </option>
         </select>
@@ -134,10 +134,10 @@ function clearAll() {
         <select
           :value="locationFilter"
           @change="onLocationChange"
-          class="appearance-none py-2 ps-3 pe-8 rounded-lg text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm cursor-pointer"
+          class="appearance-none py-2 ps-3 pe-8 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-white/20 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all outline-none backdrop-blur-sm cursor-pointer"
         >
-          <option value="" class="bg-slate-900 text-slate-300">📍 {{ t('explore.allLocations') }}</option>
-          <option v-for="loc in locations" :key="loc" :value="loc" class="bg-slate-900 text-slate-300">
+          <option value="" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">📍 {{ t('explore.allLocations') }}</option>
+          <option v-for="loc in locations" :key="loc" :value="loc" class="bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300">
             {{ loc }}
           </option>
         </select>
