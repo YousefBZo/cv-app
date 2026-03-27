@@ -18,5 +18,5 @@
 </script>
 
 <template>
-  <div class="animate-pulse rounded-lg bg-white/6" />
+  <div class="animate-pulse rounded-lg bg-black/10 dark:bg-white/5" />
 </template>

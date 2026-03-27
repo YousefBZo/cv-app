@@ -91,27 +91,27 @@ function loadMore() {
         </div>
 
         <!-- Main heading -->
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 tracking-tight leading-tight">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-5 tracking-tight leading-tight">
           {{ t('home.buildYour') }}
           <span class="bg-linear-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{{ t('home.professionalCV') }}</span>
         </h1>
 
-        <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+        <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
           {{ t('explore.heroDescription') }}
         </p>
 
         <!-- CTA Buttons -->
         <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
           <router-link v-if="authStore.isAuthenticated" to="/cv"
-            class="px-6 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all hover:scale-105 active:scale-95">
+            class="px-6 py-3 rounded-xl text-sm font-semibold text-white-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all hover:scale-105 active:scale-95">
             👁 {{ t('home.viewMyCV') }}
           </router-link>
           <router-link v-else to="/register"
-            class="px-6 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all hover:scale-105 active:scale-95">
+            class="px-6 py-3 rounded-xl text-sm font-semibold text-white-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all hover:scale-105 active:scale-95">
             🚀 {{ t('home.getStarted') }}
           </router-link>
           <a href="#explore"
-            class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-300 border border-white/10 hover:border-white/20 hover:text-white transition-all">
+            class="px-6 py-3 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:border-white/20 hover:text-slate-900 dark:text-white transition-all">
             🔍 {{ t('explore.browseProfiles') }}
           </a>
         </div>
@@ -120,17 +120,17 @@ function loadMore() {
         <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
           <div class="text-center">
             <div class="text-2xl mb-1">👥</div>
-            <div class="text-xl sm:text-2xl font-bold text-white">{{ explore.total }}</div>
+            <div class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{{ explore.total }}</div>
             <div class="text-[11px] text-slate-500 uppercase tracking-widest">{{ t('explore.totalProfiles') }}</div>
           </div>
           <div class="text-center">
             <div class="text-2xl mb-1">🌍</div>
-            <div class="text-xl sm:text-2xl font-bold text-white">∞</div>
+            <div class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">∞</div>
             <div class="text-[11px] text-slate-500 uppercase tracking-widest">{{ t('explore.globalReach') }}</div>
           </div>
           <div class="text-center">
             <div class="text-2xl mb-1">🔒</div>
-            <div class="text-xl sm:text-2xl font-bold text-white">100%</div>
+            <div class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">100%</div>
             <div class="text-[11px] text-slate-500 uppercase tracking-widest">{{ t('explore.securePrivate') }}</div>
           </div>
         </div>
@@ -143,9 +143,9 @@ function loadMore() {
     <section v-if="authStore.isAuthenticated" class="max-w-5xl mx-auto px-4 mb-16">
       <button @click="showSections = !showSections"
         class="flex items-center gap-3 mb-6 group cursor-pointer w-full">
-        <h2 class="text-lg font-bold text-white">{{ t('home.cvSections') }}</h2>
+        <h2 class="text-lg font-bold text-slate-900 dark:text-white">{{ t('home.cvSections') }}</h2>
         <div class="section-line"></div>
-        <svg class="w-4 h-4 text-slate-500 group-hover:text-white transition-all duration-300"
+        <svg class="w-4 h-4 text-slate-500 group-hover:text-slate-900 dark:text-white transition-all duration-300"
           :class="showSections ? 'rotate-180' : ''"
           fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -161,7 +161,7 @@ function loadMore() {
                 {{ s.icon }}
               </div>
               <div class="flex-1 min-w-0">
-                <h3 class="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">{{ t(s.key) }}</h3>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-blue-400 transition-colors">{{ t(s.key) }}</h3>
                 <p class="text-[10px] text-slate-500 mt-0.5 leading-relaxed">{{ t(s.descKey) }}</p>
               </div>
             </div>
@@ -179,10 +179,10 @@ function loadMore() {
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[11px] font-semibold uppercase tracking-widest mb-4">
           <span>🌐</span> {{ t('explore.directory') }}
         </div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-3">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3">
           {{ t('explore.discoverTalent') }}
         </h2>
-        <p class="text-slate-400 text-sm max-w-lg mx-auto">
+        <p class="text-slate-600 dark:text-slate-400 text-sm max-w-lg mx-auto">
           {{ t('explore.directorySubtitle') }}
         </p>
       </div>
@@ -218,14 +218,14 @@ function loadMore() {
       <!-- Empty state -->
       <div v-if="!explore.loading && explore.profiles.length === 0" class="text-center py-16">
         <div class="text-5xl mb-4">🔍</div>
-        <h3 class="text-lg font-bold text-white mb-2">{{ t('explore.noProfiles') }}</h3>
-        <p class="text-slate-500 text-sm">{{ t('explore.noProfilesSubtitle') }}</p>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{{ t('explore.noProfiles') }}</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">{{ t('explore.noProfilesSubtitle') }}</p>
       </div>
 
       <!-- Load More button -->
       <div v-if="explore.hasMore" class="flex justify-center mt-8">
         <button @click="loadMore" :disabled="explore.loading"
-          class="px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-300 border border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          class="px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
           <span v-if="explore.loading" class="flex items-center gap-2">
             <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
@@ -251,11 +251,11 @@ function loadMore() {
     <section v-if="!authStore.isAuthenticated" class="max-w-5xl mx-auto px-4 pb-16">
       <div class="glass-card p-10 text-center max-w-lg mx-auto">
         <div class="text-5xl mb-4">📝</div>
-        <h3 class="text-lg font-bold text-white mb-2">{{ t('home.readyTitle') }}</h3>
-        <p class="text-slate-500 text-sm mb-6">{{ t('home.readySubtitle') }}</p>
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{{ t('home.readyTitle') }}</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">{{ t('home.readySubtitle') }}</p>
         <div class="flex items-center justify-center gap-3">
-          <router-link to="/login" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-300 border border-white/10 hover:border-white/20 transition-all">{{ t('nav.signIn') }}</router-link>
-          <router-link to="/register" class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-linear-to-r from-blue-500 to-indigo-600 transition-all">{{ t('nav.signUp') }}</router-link>
+          <router-link to="/login" class="px-5 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:border-white/20 transition-all">{{ t('nav.signIn') }}</router-link>
+          <router-link to="/register" class="px-5 py-2 rounded-lg text-sm font-medium text-white-linear-to-r from-blue-500 to-indigo-600 transition-all">{{ t('nav.signUp') }}</router-link>
         </div>
       </div>
     </section>

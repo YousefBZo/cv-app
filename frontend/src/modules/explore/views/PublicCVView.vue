@@ -13,6 +13,7 @@
  *   - Back button to return to the directory
  */
 import { onMounted, computed, ref, watch } from 'vue'
+import { useDark } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useExploreStore } from '@/modules/explore/stores/explore'
@@ -27,6 +28,7 @@ const { t } = useI18n()
 const explore = useExploreStore()
 const authStore = useAuthStore()
 const toast = useToastStore()
+const isDark = useDark()
 
 const slug = computed(() => route.params.slug)
 const cv = computed(() => explore.publicCV)
@@ -688,8 +690,8 @@ function formatDate(dateStr) {
 </script>
 
 <template>
-  <div class="min-h-screen text-slate-100 font-sans selection:bg-blue-500/30 overflow-x-hidden pb-20"
-    style="background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);">
+  <div class="min-h-screen text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-500/30 overflow-x-hidden pb-20"
+    :class="{ 'cv-bg-dark': isDark }">
 
     <!-- Loading Skeleton -->
     <div v-if="loading" class="max-w-4xl mx-auto px-4 py-16">
@@ -710,10 +712,10 @@ function formatDate(dateStr) {
     <div v-else-if="error" class="flex items-center justify-center min-h-[60vh]">
       <div class="text-center space-y-6 max-w-md mx-auto px-6">
         <div class="text-6xl">😔</div>
-        <h2 class="text-2xl font-bold text-white">{{ t('explore.profileNotFound') }}</h2>
-        <p class="text-slate-400">{{ error }}</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">{{ t('explore.profileNotFound') }}</h2>
+        <p class="text-slate-600 dark:text-slate-400">{{ error }}</p>
         <button @click="goBack"
-          class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+          class="inline-block px-8 py-3 rounded-xl text-sm font-semibold text-slate-900 dark:text-white bg-linear-to-r from-blue-500 to-indigo-600 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
           ← {{ t('explore.backToDirectory') }}
         </button>
       </div>
@@ -722,10 +724,10 @@ function formatDate(dateStr) {
     <!-- CV Content -->
     <template v-else-if="cv">
       <!-- Top action bar -->
-      <div class="sticky top-14 z-30 bg-black/40 backdrop-blur-xl border-b border-white/5">
+      <div class="sticky top-14 z-30 bg-white/70 dark:bg-black/40 backdrop-blur-xl border-b border-slate-200 dark:border-white/5">
         <div class="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
           <button @click="goBack"
-            class="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
+            class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
@@ -733,7 +735,7 @@ function formatDate(dateStr) {
           </button>
           <button @click="shareLink"
             class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-medium border transition-all"
-            :class="copied ? 'text-green-400 border-green-400/30 bg-green-400/10' : 'text-slate-300 border-white/10 hover:border-blue-400/30 hover:text-blue-400'">
+            :class="copied ? 'text-green-400 border-green-400/30 bg-green-400/10' : 'text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-blue-400/30 hover:text-blue-400'">
             <svg v-if="!copied" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
             </svg>
@@ -746,8 +748,8 @@ function formatDate(dateStr) {
             :disabled="generating"
             class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-medium border transition-all"
             :class="generating
-              ? 'text-slate-500 border-white/5 cursor-wait'
-              : 'text-slate-300 border-white/10 hover:border-emerald-400/30 hover:text-emerald-400'">
+              ? 'text-slate-500 border-slate-200 dark:border-white/5 cursor-wait'
+              : 'text-slate-700 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-emerald-400/30 hover:text-emerald-400'">
             <svg v-if="generating" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -765,19 +767,19 @@ function formatDate(dateStr) {
       <section class="flex flex-col items-center justify-center py-14 sm:py-24 px-4 sm:px-6">
         <div class="relative mb-8">
           <div class="absolute -inset-1 bg-linear-to-r from-blue-600 to-cyan-400 rounded-full blur opacity-25"></div>
-          <div class="relative bg-slate-900 rounded-full p-1 border border-white/10 shadow-2xl">
+          <div class="relative bg-white dark:bg-slate-900 rounded-full p-1 border border-slate-200 dark:border-white/10 shadow-2xl">
             <img v-if="cv.photo" :src="cv.photo" :alt="cv.user_name" class="rounded-full w-32 h-32 sm:w-44 sm:h-44 object-cover" />
-            <div v-else class="rounded-full w-32 h-32 sm:w-44 sm:h-44 bg-slate-800 flex items-center justify-center text-slate-400 border border-dashed border-slate-600">
+            <div v-else class="rounded-full w-32 h-32 sm:w-44 sm:h-44 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 border border-dashed border-slate-600">
               <span class="text-3xl font-bold">{{ cv.user_name?.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) }}</span>
             </div>
           </div>
         </div>
         <div class="text-center max-w-2xl mx-auto space-y-4">
-          <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-b from-white to-slate-400">
+          <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-b from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
             {{ cv.user_name }}
           </h1>
           <p class="text-lg sm:text-xl text-blue-400 font-medium">{{ cv.headline }}</p>
-          <p v-if="cv.summary" class="text-base sm:text-lg text-slate-300 font-light leading-relaxed italic">"{{ cv.summary }}"</p>
+          <p v-if="cv.summary" class="text-base sm:text-lg text-slate-700 dark:text-slate-300 font-light leading-relaxed italic">"{{ cv.summary }}"</p>
           <div v-if="cv.location" class="flex items-center justify-center gap-2 pt-2 text-sm font-medium text-blue-400 uppercase tracking-widest">
             <span class="w-8 h-px bg-blue-500/50"></span>
             <span>📍 {{ cv.location }}</span>
@@ -787,23 +789,23 @@ function formatDate(dateStr) {
           <!-- Contact Info Pills -->
           <div class="flex flex-wrap items-center justify-center gap-2 pt-5">
             <a v-if="cv.phone" :href="'tel:' + cv.phone"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
               <span>📞</span> {{ cv.phone }}
             </a>
             <a v-if="cv.contact_email" :href="'mailto:' + cv.contact_email"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-blue-400/30 hover:text-blue-400 transition-all">
               <span>✉️</span> {{ cv.contact_email }}
             </a>
             <a v-if="cv.website" :href="cv.website" target="_blank" rel="noopener"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-cyan-400/30 hover:text-cyan-400 transition-all">
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-cyan-400/30 hover:text-cyan-400 transition-all">
               <span>🌐</span> {{ t('forms.website') }}
             </a>
             <a v-if="cv.linkedin" :href="cv.linkedin" target="_blank" rel="noopener"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-blue-500/30 hover:text-blue-500 transition-all">
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-blue-500/30 hover:text-blue-500 transition-all">
               <span>💼</span> LinkedIn
             </a>
             <a v-if="cv.github" :href="cv.github" target="_blank" rel="noopener"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 bg-white/5 border border-white/10 hover:border-purple-400/30 hover:text-purple-400 transition-all">
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-purple-400/30 hover:text-purple-400 transition-all">
               <span>🐙</span> GitHub
             </a>
           </div>
@@ -823,13 +825,13 @@ function formatDate(dateStr) {
               class="group flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-2 sm:py-2 rounded-xl text-sm font-medium border transition-all duration-300"
               :class="reactions.user_reaction === 'like'
                 ? 'bg-blue-500/15 border-blue-400/40 text-blue-400 shadow-lg shadow-blue-500/10'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:border-blue-400/30 hover:text-blue-400 hover:bg-blue-500/5'"
+                : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-blue-400/30 hover:text-blue-400 hover:bg-blue-500/5'"
             >
               <span class="text-base sm:text-lg transition-transform duration-300" :class="{ 'scale-125': reactions.user_reaction === 'like' }">👍</span>
               <span class="text-[10px] sm:text-sm leading-tight hidden sm:inline">{{ t('notifications.like') }}</span>
               <span v-if="reactions.likes > 0"
                 class="px-1 sm:px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold"
-                :class="reactions.user_reaction === 'like' ? 'bg-blue-400/20 text-blue-300' : 'bg-white/5 text-slate-500'">
+                :class="reactions.user_reaction === 'like' ? 'bg-blue-400/20 text-blue-300' : 'bg-black/5 dark:bg-white/5 text-slate-500'">
                 {{ reactions.likes }}
               </span>
             </button>
@@ -841,13 +843,13 @@ function formatDate(dateStr) {
               class="group flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-2 sm:py-2 rounded-xl text-sm font-medium border transition-all duration-300"
               :class="reactions.user_reaction === 'love'
                 ? 'bg-pink-500/15 border-pink-400/40 text-pink-400 shadow-lg shadow-pink-500/10'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:border-pink-400/30 hover:text-pink-400 hover:bg-pink-500/5'"
+                : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-pink-400/30 hover:text-pink-400 hover:bg-pink-500/5'"
             >
               <span class="text-base sm:text-lg transition-transform duration-300" :class="{ 'scale-125': reactions.user_reaction === 'love' }">❤️</span>
               <span class="text-[10px] sm:text-sm leading-tight hidden sm:inline">{{ t('notifications.love') }}</span>
               <span v-if="reactions.loves > 0"
                 class="px-1 sm:px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold"
-                :class="reactions.user_reaction === 'love' ? 'bg-pink-400/20 text-pink-300' : 'bg-white/5 text-slate-500'">
+                :class="reactions.user_reaction === 'love' ? 'bg-pink-400/20 text-pink-300' : 'bg-black/5 dark:bg-white/5 text-slate-500'">
                 {{ reactions.loves }}
               </span>
             </button>
@@ -859,13 +861,13 @@ function formatDate(dateStr) {
               class="group flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-2 sm:py-2 rounded-xl text-sm font-medium border transition-all duration-300"
               :class="reactions.user_reaction === 'celebrate'
                 ? 'bg-amber-500/15 border-amber-400/40 text-amber-400 shadow-lg shadow-amber-500/10'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:border-amber-400/30 hover:text-amber-400 hover:bg-amber-500/5'"
+                : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-amber-400/30 hover:text-amber-400 hover:bg-amber-500/5'"
             >
               <span class="text-base sm:text-lg transition-transform duration-300" :class="{ 'scale-125': reactions.user_reaction === 'celebrate' }">🎉</span>
               <span class="text-[10px] sm:text-sm leading-tight hidden sm:inline">{{ t('notifications.celebrate') }}</span>
               <span v-if="reactions.celebrates > 0"
                 class="px-1 sm:px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold"
-                :class="reactions.user_reaction === 'celebrate' ? 'bg-amber-400/20 text-amber-300' : 'bg-white/5 text-slate-500'">
+                :class="reactions.user_reaction === 'celebrate' ? 'bg-amber-400/20 text-amber-300' : 'bg-black/5 dark:bg-white/5 text-slate-500'">
                 {{ reactions.celebrates }}
               </span>
             </button>
@@ -877,13 +879,13 @@ function formatDate(dateStr) {
               class="group flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-2 sm:py-2 rounded-xl text-sm font-medium border transition-all duration-300"
               :class="reactions.user_reaction === 'insightful'
                 ? 'bg-emerald-500/15 border-emerald-400/40 text-emerald-400 shadow-lg shadow-emerald-500/10'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:border-emerald-400/30 hover:text-emerald-400 hover:bg-emerald-500/5'"
+                : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-emerald-400/30 hover:text-emerald-400 hover:bg-emerald-500/5'"
             >
               <span class="text-base sm:text-lg transition-transform duration-300" :class="{ 'scale-125': reactions.user_reaction === 'insightful' }">💡</span>
               <span class="text-[10px] sm:text-sm leading-tight hidden sm:inline">{{ t('notifications.insightful') }}</span>
               <span v-if="reactions.insightfuls > 0"
                 class="px-1 sm:px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold"
-                :class="reactions.user_reaction === 'insightful' ? 'bg-emerald-400/20 text-emerald-300' : 'bg-white/5 text-slate-500'">
+                :class="reactions.user_reaction === 'insightful' ? 'bg-emerald-400/20 text-emerald-300' : 'bg-black/5 dark:bg-white/5 text-slate-500'">
                 {{ reactions.insightfuls }}
               </span>
             </button>
@@ -895,20 +897,20 @@ function formatDate(dateStr) {
               class="group flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 px-1 sm:px-4 py-2 sm:py-2 rounded-xl text-sm font-medium border transition-all duration-300"
               :class="reactions.user_reaction === 'curious'
                 ? 'bg-purple-500/15 border-purple-400/40 text-purple-400 shadow-lg shadow-purple-500/10'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:border-purple-400/30 hover:text-purple-400 hover:bg-purple-500/5'"
+                : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-purple-400/30 hover:text-purple-400 hover:bg-purple-500/5'"
             >
               <span class="text-base sm:text-lg transition-transform duration-300" :class="{ 'scale-125': reactions.user_reaction === 'curious' }">🤔</span>
               <span class="text-[10px] sm:text-sm leading-tight hidden sm:inline">{{ t('notifications.curious') }}</span>
               <span v-if="reactions.curious > 0"
                 class="px-1 sm:px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold"
-                :class="reactions.user_reaction === 'curious' ? 'bg-purple-400/20 text-purple-300' : 'bg-white/5 text-slate-500'">
+                :class="reactions.user_reaction === 'curious' ? 'bg-purple-400/20 text-purple-300' : 'bg-black/5 dark:bg-white/5 text-slate-500'">
                 {{ reactions.curious }}
               </span>
             </button>
           </div>
 
           <!-- Separator + Stats -->
-          <div class="mt-3 pt-3 border-t border-white/5 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center justify-between gap-2 sm:gap-3">
+          <div class="mt-3 pt-3 border-t border-slate-200 dark:border-white/5 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center justify-between gap-2 sm:gap-3">
             <div class="flex items-center gap-3 sm:gap-4 text-[11px] sm:text-xs text-slate-500">
               <div v-if="reactions.total > 0" class="flex items-center gap-1.5">
                 <span>🎉</span>
@@ -934,21 +936,21 @@ function formatDate(dateStr) {
       <!-- Experience Section -->
       <section v-if="cv.experiences?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">💼 {{ t('cv.experience') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">💼 {{ t('cv.experience') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="space-y-4">
           <div v-for="exp in cv.experiences" :key="exp.id" class="glass-card p-5">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h3 class="text-sm font-bold text-white">{{ exp.position }}</h3>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ exp.position }}</h3>
                 <p class="text-xs text-blue-400 mt-0.5">{{ exp.company }}</p>
               </div>
               <span class="text-[11px] text-slate-500 whitespace-nowrap">
                 {{ formatDate(exp.start_date) }} — {{ formatDate(exp.end_date) }}
               </span>
             </div>
-            <p v-if="exp.description" class="text-xs text-slate-400 mt-3 leading-relaxed">{{ exp.description }}</p>
+            <p v-if="exp.description" class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">{{ exp.description }}</p>
           </div>
         </div>
       </section>
@@ -956,21 +958,21 @@ function formatDate(dateStr) {
       <!-- Education Section -->
       <section v-if="cv.educations?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">🎓 {{ t('cv.educationTitle') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🎓 {{ t('cv.educationTitle') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="space-y-4">
           <div v-for="edu in cv.educations" :key="edu.id" class="glass-card p-5">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h3 class="text-sm font-bold text-white">{{ edu.institution }}</h3>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ edu.institution }}</h3>
                 <p class="text-xs text-blue-400 mt-0.5">{{ edu.degree }} {{ edu.field_of_study ? '— ' + edu.field_of_study : '' }}</p>
               </div>
               <span class="text-[11px] text-slate-500 whitespace-nowrap">
                 {{ formatDate(edu.start_date) }} — {{ formatDate(edu.end_date) }}
               </span>
             </div>
-            <p v-if="edu.description" class="text-xs text-slate-400 mt-3 leading-relaxed">{{ edu.description }}</p>
+            <p v-if="edu.description" class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">{{ edu.description }}</p>
           </div>
         </div>
       </section>
@@ -978,7 +980,7 @@ function formatDate(dateStr) {
       <!-- Projects Section -->
       <section v-if="cv.projects?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">🚀 {{ t('cv.featuredProjects') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🚀 {{ t('cv.featuredProjects') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -987,8 +989,8 @@ function formatDate(dateStr) {
               <img :src="project.cover" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
             <div class="p-5">
-              <h3 class="text-sm font-bold text-white">{{ project.title }}</h3>
-              <p v-if="project.description" class="text-xs text-slate-400 mt-1.5 leading-relaxed line-clamp-3">{{ project.description }}</p>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
+              <p v-if="project.description" class="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed line-clamp-3">{{ project.description }}</p>
               <div class="flex items-center gap-3 mt-3">
                 <a v-if="project.github_url" :href="project.github_url" target="_blank" rel="noopener"
                   class="text-[11px] text-purple-400 hover:text-purple-300 font-medium transition-colors">
@@ -1007,7 +1009,7 @@ function formatDate(dateStr) {
       <!-- Skills Section -->
       <section v-if="cv.skills?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">⚡ {{ t('cv.skills') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">⚡ {{ t('cv.skills') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -1017,7 +1019,7 @@ function formatDate(dateStr) {
               'text-emerald-400 bg-emerald-400/10 border-emerald-400/20': skill.level === 'expert',
               'text-blue-400 bg-blue-400/10 border-blue-400/20': skill.level === 'advanced',
               'text-amber-400 bg-amber-400/10 border-amber-400/20': skill.level === 'intermediate',
-              'text-slate-400 bg-white/5 border-white/10': !skill.level || skill.level === 'beginner',
+              'text-slate-600 dark:text-slate-400 bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10': !skill.level || skill.level === 'beginner',
             }">
             {{ skill.name }}
             <span v-if="skill.level" class="text-[10px] opacity-60 ms-1">• {{ t('levels.' + skill.level) }}</span>
@@ -1028,12 +1030,12 @@ function formatDate(dateStr) {
       <!-- Languages Section -->
       <section v-if="cv.languages?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">🌍 {{ t('cv.languagesTitle') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🌍 {{ t('cv.languagesTitle') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="flex flex-wrap gap-2">
           <span v-for="lang in cv.languages" :key="lang.id"
-            class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 border border-white/10">
+            class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10">
             {{ lang.name }}
             <span v-if="lang.level" class="text-[10px] text-slate-500 ms-1">• {{ t('levels.' + lang.level) }}</span>
           </span>
@@ -1043,16 +1045,16 @@ function formatDate(dateStr) {
       <!-- Certifications Section -->
       <section v-if="cv.certifications?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">🏅 {{ t('cv.certificationsTitle') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🏅 {{ t('cv.certificationsTitle') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div v-for="cert in cv.certifications" :key="cert.id" class="glass-card p-5 flex items-start gap-4">
-            <img v-if="cert.photo" :src="cert.photo" :alt="cert.name" class="w-12 h-12 rounded-lg object-cover border border-white/10" />
+            <img v-if="cert.photo" :src="cert.photo" :alt="cert.name" class="w-12 h-12 rounded-lg object-cover border border-slate-200 dark:border-white/10" />
             <div class="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-lg" v-else>🏅</div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-bold text-white">{{ cert.name }}</h3>
-              <p class="text-xs text-slate-400 mt-0.5">{{ cert.organization }}</p>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ cert.name }}</h3>
+              <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{{ cert.organization }}</p>
               <p class="text-[11px] text-slate-500 mt-1">
                 {{ formatDate(cert.issue_date) }}
                 <span v-if="cert.expiration_date"> — {{ formatDate(cert.expiration_date) }}</span>
@@ -1065,21 +1067,21 @@ function formatDate(dateStr) {
       <!-- Volunteer Section -->
       <section v-if="cv.volunteer_experiences?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
         <div class="flex items-center gap-3 mb-8">
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">🤝 {{ t('cv.volunteerTitle') }}</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🤝 {{ t('cv.volunteerTitle') }}</h2>
           <div class="section-line"></div>
         </div>
         <div class="space-y-4">
           <div v-for="vol in cv.volunteer_experiences" :key="vol.id" class="glass-card p-5">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h3 class="text-sm font-bold text-white">{{ vol.role }}</h3>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ vol.role }}</h3>
                 <p class="text-xs text-blue-400 mt-0.5">{{ vol.organization }}</p>
               </div>
               <span class="text-[11px] text-slate-500 whitespace-nowrap">
                 {{ formatDate(vol.start_date) }} — {{ formatDate(vol.end_date) }}
               </span>
             </div>
-            <p v-if="vol.description" class="text-xs text-slate-400 mt-3 leading-relaxed">{{ vol.description }}</p>
+            <p v-if="vol.description" class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">{{ vol.description }}</p>
           </div>
         </div>
       </section>
@@ -1087,3 +1089,9 @@ function formatDate(dateStr) {
     </template>
   </div>
 </template>
+
+<style scoped>
+.cv-bg-dark {
+  background-image: linear-gradient(135deg, #000b18 0%, #00264d 100%);
+}
+</style>
