@@ -51,9 +51,14 @@ use App\Http\Requests\UpdateUserPasswordRequest;
 |
 */
 Route::prefix('v1')->middleware('throttle:api')->group(function () {
-    Route::get('/public/profiles', [PublicProfileController::class, 'index']);
-    Route::get('/public/profiles/locations', [PublicProfileController::class, 'locations']);
-    Route::get('/public/profiles/{slug}', [PublicProfileController::class, 'show']);
+    Route::get('/public/profiles', [PublicProfileController::class, 'index'])->middleware('cache.headers:public;max_age=3600;etag');
+    Route::get('/public/profiles/locations', [PublicProfileController::class, 'locations'])->middleware('cache.headers:public;max_age=86400;etag');
+    Route::get('/public/profiles/{slug}', [PublicProfileController::class, 'show'])->middleware('cache.headers:public;max_age=3600;etag');
+    Route::get('/public/profiles/{slug}/pdf', [PublicProfileController::class, 'downloadPdf']);
+
+    // Google Auth Routes
+    Route::get('/auth/google', [App\Http\Controllers\Api\V1\Auth\GoogleAuthController::class, 'redirect']);
+    Route::get('/auth/google/callback', [App\Http\Controllers\Api\V1\Auth\GoogleAuthController::class, 'callback']);
 
     // Reactions — public read (anyone can see counts)
     Route::get('/reactions/{profileId}', [ReactionController::class, 'show']);
@@ -103,8 +108,8 @@ Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api'])->group(functio
         return response()->json(['message' => 'Logged out successfully.']);
     });
 
-    // CV
-    Route::get('/cv', [CVController::class, 'index']);
+    // CV - using ETag and HTTP Caching
+    Route::get('/cv', [CVController::class, 'index'])->middleware('cache.headers:private;max_age=3600;etag');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'index']);

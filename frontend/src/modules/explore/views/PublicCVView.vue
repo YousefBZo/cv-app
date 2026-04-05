@@ -18,6 +18,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useExploreStore } from '@/modules/explore/stores/explore'
 import { useAuthStore } from '@/modules/auth/stores/auth'
+import { useDownloadCV } from '@/modules/cv/composables/useDownloadCV'
 import { useToastStore } from '@/shared/stores/toast'
 import SkeletonPulse from '@/shared/components/SkeletonPulse.vue'
 import http from '@/api/http'
@@ -30,13 +31,14 @@ const authStore = useAuthStore()
 const toast = useToastStore()
 const isDark = useDark()
 
+const { generating, downloadCV } = useDownloadCV()
+
 const slug = computed(() => route.params.slug)
 const cv = computed(() => explore.publicCV)
 const loading = computed(() => explore.publicCVLoading)
 const error = computed(() => explore.publicCVError)
 
 const copied = ref(false)
-const generating = ref(false)
 
 // ── Reaction state ───────────────────────────────────────────
 const reactions = ref({ likes: 0, loves: 0, celebrates: 0, insightfuls: 0, curious: 0, total: 0, user_reaction: null })
@@ -605,7 +607,7 @@ function buildPdfDom(data) {
   return root
 }
 
-async function downloadPDF() {
+async function downloadPDF____() {
   if (generating.value) return
   generating.value = true
 
@@ -744,7 +746,7 @@ function formatDate(dateStr) {
             </svg>
             {{ copied ? t('explore.copied') : t('explore.shareCV') }}
           </button>
-          <button @click="downloadPDF"
+          <button @click="downloadCV(cv?.user_name)"
             :disabled="generating"
             class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-medium border transition-all"
             :class="generating
@@ -986,7 +988,7 @@ function formatDate(dateStr) {
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div v-for="project in cv.projects" :key="project.id" class="glass-card overflow-hidden group">
             <div v-if="project.cover" class="aspect-video overflow-hidden">
-              <img :src="project.cover" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              <img :src="project.cover" :alt="project.title" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
             <div class="p-5">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ project.title }}</h3>
@@ -1007,7 +1009,7 @@ function formatDate(dateStr) {
       </section>
 
       <!-- Skills Section -->
-      <section v-if="cv.skills?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+      <section v-if="cv.skills?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16" v-memo="[cv.skills.length]">
         <div class="flex items-center gap-3 mb-8">
           <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">⚡ {{ t('cv.skills') }}</h2>
           <div class="section-line"></div>
@@ -1028,7 +1030,7 @@ function formatDate(dateStr) {
       </section>
 
       <!-- Languages Section -->
-      <section v-if="cv.languages?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+      <section v-if="cv.languages?.length" class="max-w-4xl mx-auto px-4 sm:px-6 mb-16" v-memo="[cv.languages.length]">
         <div class="flex items-center gap-3 mb-8">
           <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">🌍 {{ t('cv.languagesTitle') }}</h2>
           <div class="section-line"></div>
@@ -1050,7 +1052,7 @@ function formatDate(dateStr) {
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div v-for="cert in cv.certifications" :key="cert.id" class="glass-card p-5 flex items-start gap-4">
-            <img v-if="cert.photo" :src="cert.photo" :alt="cert.name" class="w-12 h-12 rounded-lg object-cover border border-slate-200 dark:border-white/10" />
+            <img v-if="cert.photo" :src="cert.photo" :alt="cert.name" loading="lazy" class="w-12 h-12 rounded-lg object-cover border border-slate-200 dark:border-white/10" />
             <div class="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-lg" v-else>🏅</div>
             <div class="flex-1 min-w-0">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white">{{ cert.name }}</h3>

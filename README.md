@@ -1,8 +1,8 @@
-# CV Builder
+# 📄 CV Builder
 
 A full-stack web application for building and managing professional CVs/resumes. Users can create a profile and add structured sections — education, experience, projects, certifications, skills, languages, and volunteer work — all served through a RESTful API.
 
-## Tech Stack
+## 💻 Tech Stack
 
 | Layer        | Technology                                    |
 |------------- |---------------------------------------------- |
@@ -14,7 +14,7 @@ A full-stack web application for building and managing professional CVs/resumes.
 | Bundler      | Vite 7                                        |
 | Infra        | Docker (PHP-FPM, Nginx, PostgreSQL)           |
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 cv-app/
@@ -41,25 +41,25 @@ cv-app/
 └── README.md
 ```
 
-## Features
+## ✨ Features
 
-- **Authentication** — Register, login, and logout with Sanctum token auth
-- **Profile Management** — Create, update, and delete personal profile with photo upload
-- **Education** — Add degrees with institution, field of study, and date range
-- **Work Experience** — Track positions with company, role, and description
-- **Projects** — Showcase projects with links, GitHub URLs, and cover images
-- **Certifications** — Store certificates with issuing organization and dates
-- **Skills** — Select from a predefined list with proficiency levels
-- **Languages** — Add languages with proficiency levels
-- **Volunteer Work** — Record volunteer experiences
-- **Full CV View** — Aggregated read-only endpoint returning the complete CV
+- 🔐 **Authentication** — Register, login, and logout with Sanctum token auth
+- 👤 **Profile Management** — Create, update, and delete personal profile with photo upload
+- 🎓 **Education** — Add degrees with institution, field of study, and date range
+- 💼 **Work Experience** — Track positions with company, role, and description
+- 🚀 **Projects** — Showcase projects with links, GitHub URLs, and cover images
+- 📜 **Certifications** — Store certificates with issuing organization and dates
+- 🛠️ **Skills** — Select from a predefined list with proficiency levels
+- 🗣️ **Languages** — Add languages with proficiency levels
+- 🤝 **Volunteer Work** — Record volunteer experiences
+- 📄 **Full CV View** — Aggregated read-only endpoint returning the complete CV
 
-## Prerequisites
+## 📋 Prerequisites
 
 - [Docker](https://www.docker.com/) & Docker Compose
 - [Node.js](https://nodejs.org/) ≥ 18 and npm
 
-## Getting Started
+## 🚀 Getting Started
 
 ### 1. Clone the repository
 
@@ -108,7 +108,7 @@ npm run dev
 
 The SPA will be available at **http://localhost:3000**.
 
-## API Endpoints
+## 🔌 API Endpoints
 
 All endpoints are prefixed with `/api/v1` and require authentication (`Authorization: Bearer <token>`) unless noted otherwise.
 
@@ -135,7 +135,7 @@ All endpoints are prefixed with `/api/v1` and require authentication (`Authoriza
 
 ¹ Public endpoint — no token required.
 
-## Architecture
+## 🏗️ Architecture
 
 ```
 Client (Vue 3 SPA)
@@ -156,12 +156,12 @@ PHP-FPM (Laravel 12)
 PostgreSQL 16
 ```
 
-## Running Tests
+## 🧪 Running Tests
 
 ```bash
 docker compose exec php php artisan test
 ```
 
-## License
+## 📜 License
 
 This project is for educational purposes.
